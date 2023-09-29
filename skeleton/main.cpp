@@ -57,7 +57,8 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	particle = new Particle(Vector3(0, 0, 0), Vector3(0, 10, 0));
+	float damp = 0.998, mass = 0.400f, gravity = -9.8f;
+	particle = new Particle(Vector3(0, 0, 0), Vector3(0, 10, 0), Vector3(0, 10, 0), mass, gravity, damp);
 
 	}
 

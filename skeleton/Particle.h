@@ -11,7 +11,7 @@ public:
 
 	void integrate(double t);
 
-private:
+protected:
 	Vector3 vel;
 	PxTransform pose;
 	RenderItem* renderItem;

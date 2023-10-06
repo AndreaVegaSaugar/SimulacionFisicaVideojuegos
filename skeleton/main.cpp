@@ -99,6 +99,8 @@ void cleanupPhysics(bool interactive)
 	
 	gFoundation->release();
 
+	delete gun;
+
 }
 
 // Function called when a key is pressed

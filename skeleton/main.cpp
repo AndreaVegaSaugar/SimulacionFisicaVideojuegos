@@ -9,6 +9,7 @@
 #include "callbacks.hpp"
 #include "Particle.h"
 #include "Gun.h"
+#include "ParticleSystem.h"
 
 #include <iostream>
 
@@ -34,6 +35,7 @@ ContactReportCallback gContactReportCallback;
 
 Particle* particle = nullptr;
 Gun* gun = nullptr;
+ParticleSystem* particleSystem = nullptr;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -59,10 +61,14 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	//float damp = 0.998, mass = 0.400f, gravity = -9.8f;
+	
 	//particle = new Particle(Vector3(0, 0, 0), Vector3(0, 10, 0));
 	
-	gun = new Gun();
+	//particle = new Particle(Vector3(0, 0, 0), Vector3(0, 10, 0), Vector3(0, 0, 10), 0.001);
+	
+	//gun = new Gun();
+
+	particleSystem = new ParticleSystem();
 
 }
 
@@ -78,7 +84,8 @@ void stepPhysics(bool interactive, double t)
 	gScene->fetchResults(true);
 
 	//particle->integrate(t);
-	gun->integrate(t);
+	//gun->integrate(t);
+	particleSystem->update(t);
 }
 
 // Function to clean data
@@ -88,7 +95,7 @@ void cleanupPhysics(bool interactive)
 	PX_UNUSED(interactive);
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
-	delete particle;
+	//delete particle;
 	gScene->release();
 	gDispatcher->release();
 	// -----------------------------------------------------

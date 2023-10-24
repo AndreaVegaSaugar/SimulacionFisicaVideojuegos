@@ -30,7 +30,7 @@ void Gun::shoot(pType type, Vector3 camPos, Vector3 camDir) {
 		balas.push_back(new Proyectil(lifeTime, camPos, vel * camDir));
 	}
 	else if (type == laser) {
-	
+		
 	}
 	else if (type == cannonBall) {
 		

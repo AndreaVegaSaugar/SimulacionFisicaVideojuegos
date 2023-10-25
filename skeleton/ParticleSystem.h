@@ -2,7 +2,7 @@
 #include <list>
 #include "GaussianParticleGenerator.h"
 #include "UniformParticleGenerator.h"
-
+#include "FireworkGenerator.h"
 
 using namespace std;
 
@@ -17,12 +17,14 @@ class ParticleSystem
 protected:
 	list<Particle*> _particles;
 	list<ParticleGenerator*> _particle_generators;
-	ParticleGenerator* _firework_generator; // This generator is only to shoot the firework!!
+	FireworkGenerator* _firework_generator; // This generator is only to shoot the firework!!
 	//std::vector<Firework*> _firework_pool; // Fireworks to be used as models!
+	//int n_FireworkGens = 5;
 	Zone _zone;
 	Vector3 _gravity;
+
 	void onParticleDeath(Particle* p);
-	void createFireworkSystem(); 
+	//void createFireworkSystem(); 
 	bool isInZone(Particle* p) {
 		return ((p->_pose.p.x < _zone.x_Max) && (p->_pose.p.x > _zone.x_Min) &&
 			(p->_pose.p.y < _zone.y_Max) && (p->_pose.p.y > _zone.y_Min) &&
@@ -33,7 +35,8 @@ public:
 	ParticleSystem(const Vector3& g = { 0.0f, -10.0f, 0.0f});
 	~ParticleSystem();
 	void update(double t);
-	ParticleGenerator* getParticleGenerator(const string& name);
-	void generateFirework(unsigned firework_type); 
+	ParticleGenerator* getParticleGenerator(const string& name); 
+	FireworkGenerator* getFireworkGenerator() { return _firework_generator; };
+	void generateFirework();
 };
 

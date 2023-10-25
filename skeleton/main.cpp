@@ -106,8 +106,8 @@ void cleanupPhysics(bool interactive)
 	
 	gFoundation->release();
 
-	delete gun;
-
+	//delete gun;
+	delete particleSystem;
 }
 
 // Function called when a key is pressed
@@ -121,17 +121,18 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	//case ' ':	break;
 	case ' ':
 	{
-		gun->shoot(bullet, GetCamera()->getTransform().p, GetCamera()->getDir());
+		//gun->shoot(bullet, GetCamera()->getTransform().p, GetCamera()->getDir());
+		particleSystem->generateFirework();
 		break;
 	}
 	case 'C':
 	{
-		gun->shoot(cannonBall, GetCamera()->getTransform().p, GetCamera()->getDir());
+		//gun->shoot(cannonBall, GetCamera()->getTransform().p, GetCamera()->getDir());
 		break;
 	}
 	case 'L':
 	{
-		gun->shoot(laser, GetCamera()->getTransform().p, GetCamera()->getDir());
+		//gun->shoot(laser, GetCamera()->getTransform().p, GetCamera()->getDir());
 		break;
 	}
 	default:

@@ -5,7 +5,8 @@ ParticleSystem::ParticleSystem(const Vector3& g) {
 	_zone.x_Max = 100; _zone.x_Min = -100; _zone.y_Max = 100; _zone.y_Min = -100; _zone.z_Max = 100; _zone.z_Min = -100;
 
 	//_particle_generators.push_back(new GaussianParticleGenerator("fuente", Vector3(1, 1, 1), Vector3(10, 10, 10), Vector3(0, 0, 0), Vector3(0, 30, 0), _gravity, 1));
-	_particle_generators.push_back(new UniformParticleGenerator("fuente", Vector3(1, 1, 1), Vector3(-1, -1, -1), Vector3(50, 50, 50), Vector3(10, 10, 10), _gravity, 1));
+	//_particle_generators.push_back(new UniformParticleGenerator("fuente", Vector3(1, 1, 1), Vector3(-1, -1, -1), Vector3(50, 50, 50), Vector3(10, 10, 10), _gravity, 1));
+	_firework_generator = new FireworkGenerator();
 }
 
 ParticleSystem::~ParticleSystem() {
@@ -31,16 +32,17 @@ void ParticleSystem::update(double t) {
 	}
 }
 
+void ParticleSystem::generateFirework() {
+	Particle* p = _firework_generator->shoot();
+	_particles.push_back(p);
+}
+
 ParticleGenerator* ParticleSystem::getParticleGenerator(const string& name) {
 	for (ParticleGenerator* pG : _particle_generators) {
 		if (pG->getName() == name) return pG;
 	}
 }
 
-void ParticleSystem::createFireworkSystem() {
-
-}
-
-void ParticleSystem::generateFirework(unsigned firework_type) {
-
-}
+//void ParticleSystem::createFireworkSystem() {
+//	
+//}

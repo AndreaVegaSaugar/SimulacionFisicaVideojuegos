@@ -27,6 +27,7 @@ public:
 		vel_y = new std::normal_distribution<float>(mean_vel.y, std_dev_vel.y);
 		vel_z = new std::normal_distribution<float>(mean_vel.z, std_dev_vel.z);
 	}
+	~GaussianParticleGenerator();
 	virtual list<Particle*> generateParticles() override;
 };
 

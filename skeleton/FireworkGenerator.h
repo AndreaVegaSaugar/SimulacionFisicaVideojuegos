@@ -9,14 +9,13 @@ class FireworkGenerator
 {
 protected:
 	Vector3 pos, vel;
-	int n_FireworkGens;
 
 public:
 	std::vector<Firework*> _firework_pool;
 	Vector4 color;
 
 	FireworkGenerator();
+	~FireworkGenerator();
 	Particle* shoot();
-	//std::vector<Firework*> getPool() { return _firework_pool; };
 };
 

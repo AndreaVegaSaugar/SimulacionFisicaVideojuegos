@@ -1,5 +1,10 @@
 #include "GaussianParticleGenerator.h"
 
+GaussianParticleGenerator::~GaussianParticleGenerator() {
+	delete pos_x; delete pos_y; delete pos_z;
+	delete vel_x; delete vel_y; delete vel_z;
+}
+
 list<Particle*> GaussianParticleGenerator::generateParticles() {
 	list<Particle*> particles;
 	for (int i = 0; i < _n_particles; ++i) {

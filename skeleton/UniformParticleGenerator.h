@@ -25,6 +25,7 @@ public:
 		vel_y = new std::uniform_real_distribution<float>(_vel_min.y, _vel_max.y);
 		vel_z = new std::uniform_real_distribution<float>(_vel_min.z, _vel_max.z);
 	}
+	~UniformParticleGenerator();
 	virtual list<Particle*> generateParticles() override;
 };
 

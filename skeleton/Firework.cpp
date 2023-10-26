@@ -5,13 +5,15 @@ std::list<Particle*> Firework::explode() {
 	auto generator = _generator->_firework_pool;
 	std::list<Particle*> list;
 
-	Particle* f = generator[_gen + 1]->clone();
-	GaussianParticleGenerator* gP = new GaussianParticleGenerator("aux", Vector3(0.01, 0.01, 0.01), Vector3(10, 5, 10), _pose.p, f->_vel, Vector3(0, -10.0, 0), _n_hijos);
-	list = gP->generateParticles();
+	Particle* f;
+	if (_gen < generator.size() - 1) {
+		f = generator[_gen + 1]->clone();
+		f->_color = _generator->color;
 
-	for (auto it = list.begin(); it != list.end(); ++it) {
-		static_cast<Firework*>(*it)->_gen++;
-		static_cast<Firework*>(*it)->_n_hijos--;
+		GaussianParticleGenerator* gP = new GaussianParticleGenerator("aux", Vector3(0.01, 0.01, 0.01), Vector3(9, 9, 9), _pose.p, f->_vel, Vector3(0, -10.0, 0), _n_hijos);
+		gP->setParticle(f);
+		list = gP->generateParticles();
+		delete gP;
 	}
 
 	return list;

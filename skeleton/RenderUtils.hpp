@@ -34,6 +34,10 @@ public:
 
 	RenderItem() : shape(NULL), transform(NULL), references(1) {}
 
+	void setColor(Vector4 _color) {
+		color = _color;
+	}
+
 	void addReference()
 	{
 		++references;

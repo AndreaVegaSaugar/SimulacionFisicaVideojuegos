@@ -15,7 +15,8 @@ protected:
 	Particle* _model = nullptr; 
 	int _n_particles = 1; // Number of particles for each generateParticles call(TODO: add randomness ? ? )
 	double _generation_prob = 1.0; // IF 1.0 --> always produces particles
-	std::mt19937 _mt;
+	std::random_device rd{};
+	std::mt19937 _mt{ rd() };
 
 public:
 	ParticleGenerator(Vector3 gravity); //crear un modelo(?)
@@ -31,7 +32,10 @@ public:
 	inline void setMeanDuration(double new_duration) {
 		_model->_duration = new_duration;
 	}
-	//void setParticle(Particle* model) { _model = model; }; // solo sirve para cambiar del modelo desde fuera
+	void setParticle(Particle* model) { 
+		if (_model != nullptr) delete _model;
+		_model = model; 
+	}; // solo sirve para cambiar del modelo desde fuera
 	/*inline void setParticle(Particle* p, bool modify_pos_vel =
 		true) {
 		delete _model;

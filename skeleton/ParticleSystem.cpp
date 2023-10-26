@@ -21,6 +21,9 @@ void ParticleSystem::update(double t) {
 			++it;
 		}
 		else {
+			auto ot = (*it)->onDeath();
+			auto ut = _particles.end();
+			_particles.splice(ut, ot);
 			delete (*it);
 			it = _particles.erase(it);
 		}

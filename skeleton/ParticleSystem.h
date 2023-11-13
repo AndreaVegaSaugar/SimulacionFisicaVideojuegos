@@ -3,6 +3,8 @@
 #include "GaussianParticleGenerator.h"
 #include "UniformParticleGenerator.h"
 #include "FireworkGenerator.h"
+#include "GravityForceGenerator.h"
+#include "ParticleForceRegistry.h"
 
 using namespace std;
 
@@ -18,6 +20,8 @@ protected:
 	list<Particle*> _particles;
 	list<ParticleGenerator*> _particle_generators;
 	FireworkGenerator* _firework_generator = nullptr;
+	list<ForceGenerator*> _force_generators;
+	ParticleForceRegistry* _particle_force_registry;
 	Zone _zone;
 	Vector3 _gravity;
 

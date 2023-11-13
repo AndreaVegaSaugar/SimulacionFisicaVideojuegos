@@ -13,7 +13,7 @@ protected:
 	std::uniform_real_distribution<float>* vel_z;
 
 public:
-	UniformParticleGenerator(std::string name, Vector3 pos_max, Vector3 pos_min, Vector3 vel_max, Vector3 vel_min, Vector3 gravity, int n_particles) : ParticleGenerator(gravity), _pos_max(pos_max), _vel_max(vel_max), _pos_min(pos_min), _vel_min(vel_min) {
+	UniformParticleGenerator(std::string name, Vector3 pos_max, Vector3 pos_min, Vector3 vel_max, Vector3 vel_min, int n_particles) : ParticleGenerator(), _pos_max(pos_max), _vel_max(vel_max), _pos_min(pos_min), _vel_min(vel_min) {
 		_name = name;
 		setNParticles(n_particles);
 		

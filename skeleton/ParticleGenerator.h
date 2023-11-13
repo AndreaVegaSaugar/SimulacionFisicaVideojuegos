@@ -18,7 +18,7 @@ protected:
 	std::mt19937 _mt{ rd() };
 
 public:
-	ParticleGenerator(Vector3 gravity);
+	ParticleGenerator();
 	~ParticleGenerator();
 	string getName() { return _name; }
 	void setParticle(Particle* model) { 

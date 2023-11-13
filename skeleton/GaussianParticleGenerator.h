@@ -15,7 +15,7 @@ protected:
 	normal_distribution<float>* vel_z;
 
 public:
-	GaussianParticleGenerator(std::string name, Vector3 std_dev_pos, Vector3 std_dev_vel, Vector3 mean_pos, Vector3 mean_vel, Vector3 gravity, int n_particles) : ParticleGenerator(gravity), _std_dev_pos(std_dev_pos), _std_dev_vel(std_dev_vel), _mean_pos(mean_pos), _mean_vel(mean_vel) {
+	GaussianParticleGenerator(std::string name, Vector3 std_dev_pos, Vector3 std_dev_vel, Vector3 mean_pos, Vector3 mean_vel, int n_particles) : ParticleGenerator(), _std_dev_pos(std_dev_pos), _std_dev_vel(std_dev_vel), _mean_pos(mean_pos), _mean_vel(mean_vel) {
 		_name = name;
 		setNParticles(n_particles);
 

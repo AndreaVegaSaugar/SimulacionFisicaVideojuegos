@@ -2,7 +2,7 @@
 
 void GravityForceGenerator::updateForce(Particle* p, double t) {
 	//Check that the particle has Finite Mass
-	if (fabs(p->_mass) < 1e-10) //ponia _inv_mass
+	if (fabs(1/p->_mass ) < 1e-10) //ponia _inv_mass
 		return;
 
 	//Apply the mass scaled gravity

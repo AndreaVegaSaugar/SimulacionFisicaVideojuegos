@@ -4,15 +4,16 @@
 #include "UniformParticleGenerator.h"
 #include "FireworkGenerator.h"
 #include "GravityForceGenerator.h"
+#include "WhirlwindGenerator.h"
 #include "ParticleForceRegistry.h"
 
 using namespace std;
 
-struct Zone {
-	float x_Max, x_Min;
-	float y_Max, y_Min;
-	float z_Max, z_Min;
-};
+//struct Zone {
+//	float x_Max, x_Min;
+//	float y_Max, y_Min;
+//	float z_Max, z_Min;
+//};
 
 class ParticleSystem
 {

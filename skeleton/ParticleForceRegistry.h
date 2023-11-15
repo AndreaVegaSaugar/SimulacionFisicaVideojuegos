@@ -16,9 +16,19 @@ public:
 		insert(FRPair(fg, p));
 	}
 
+	void addParticleListRegistry(std::list<Particle*> p, list<ForceGenerator*> l) {
+		for (auto it = l.begin(); it != l.end(); ++it) {
+			for (Particle* part : p) {
+				addRegistry((*it), part);
+			}
+		}
+	}
+
 	void deleteParticleRegistry(Particle* p) {
-		for (auto it = begin(); it != end(); ++it) {
-			if (it->second == p) erase(it);
+		for (auto it = begin(); it != end();) {
+			auto ot = it++;
+			if (ot->second == p)
+				erase(ot);
 		}
 	}
 };

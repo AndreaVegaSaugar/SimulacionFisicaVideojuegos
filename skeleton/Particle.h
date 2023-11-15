@@ -4,6 +4,12 @@
 
 using namespace physx;
 
+struct Zone {
+	float x_Max, x_Min;
+	float y_Max, y_Min;
+	float z_Max, z_Min;
+};
+
 class Particle 
 {
 public:

@@ -43,7 +43,7 @@ void Particle::integrate(double t) {
 		_auxDuration += t;
 		alive = _auxDuration < _duration;
 		// Get the accel considering the force accum
-		Vector3 resulting_accel = _force * _mass;
+		Vector3 resulting_accel = _force * (1/_mass);
 		_vel += resulting_accel * t; // Ex. 1.3 --> add acceleration
 		_vel *= powf(_damp, t); // Exercise 1.3 --> add damping
 		_pose.p += _vel * t;

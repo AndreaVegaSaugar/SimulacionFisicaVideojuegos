@@ -135,6 +135,11 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		//gun->shoot(laser, GetCamera()->getTransform().p, GetCamera()->getDir());
 		break;
 	}
+	case 'E':
+	{
+		particleSystem->generateExplosion();
+		break;
+	}
 	default:
 		break;
 	}

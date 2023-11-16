@@ -15,12 +15,4 @@ public:
 
 protected:
 	float _K;
-	Zone _zone;
-	Vector3 _center;
-
-	bool isInZone(Particle* p) {
-		return ((p->_pose.p.x < _zone.x_Max) && (p->_pose.p.x > _zone.x_Min) &&
-			(p->_pose.p.y < _zone.y_Max) && (p->_pose.p.y > _zone.y_Min) &&
-			(p->_pose.p.z < _zone.z_Max) && (p->_pose.p.z > _zone.z_Min));
-	}
 };

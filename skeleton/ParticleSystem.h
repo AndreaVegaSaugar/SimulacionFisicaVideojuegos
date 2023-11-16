@@ -5,6 +5,7 @@
 #include "FireworkGenerator.h"
 #include "GravityForceGenerator.h"
 #include "WhirlwindGenerator.h"
+#include "ExplosionGenerator.h"
 #include "ParticleForceRegistry.h"
 
 using namespace std;
@@ -39,5 +40,6 @@ public:
 	ParticleGenerator* getParticleGenerator(const string& name); 
 	FireworkGenerator* getFireworkGenerator() { return _firework_generator; };
 	void generateFirework();
+	void generateExplosion();
 };
 

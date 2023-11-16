@@ -13,6 +13,7 @@ struct Zone {
 class Particle 
 {
 public:
+
 	Particle(Vector3 Pos, Vector3 Vel);
 	Particle(Vector3 Pos, Vector3 Vel, Vector3 acc, float damp, double duration, float mass, float size, Vector4 color, bool isModel);
 	~Particle();

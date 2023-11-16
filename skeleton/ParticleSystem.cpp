@@ -16,11 +16,10 @@ ParticleSystem::ParticleSystem(const Vector3& g) {
 	/*auto dragGen = new ParticleDragGenerator(2, 0, Vector3(20, 0, 0));
 	_force_generators.push_back(dragGen);*/
 
-	auto whirlGen = new WhirlwindGenerator(1, 2, 0, Vector3(0, 20, 0));
-	_force_generators.push_back(whirlGen);
+	/*auto whirlGen = new WhirlwindGenerator(1, 2, 0, Vector3(0, 20, 0));
+	_force_generators.push_back(whirlGen);*/
 
-	_particle_generators.push_back(new UniformParticleGenerator("fuente", Vector3(1, 5, 1), Vector3(-1, 5, -1), Vector3(10, 10, 10), Vector3(-10, 10, -10), 1));
-
+	_particle_generators.push_back(new UniformParticleGenerator("fuente", Vector3(1, 5, 1), Vector3(-1, 5, -1), Vector3(10, 30, 10), Vector3(-10, 30, -10), 1));
 }
 
 ParticleSystem::~ParticleSystem() {
@@ -58,6 +57,13 @@ void ParticleSystem::update(double t) {
 void ParticleSystem::generateFirework() {
 	Particle* p = _firework_generator->shoot();
 	_particles.push_back(p);
+}
+
+void ParticleSystem::generateExplosion() {
+	std::list<ForceGenerator*> aux;
+	aux.push_back(new ExplosionGenerator(10000, 500, 20));
+	_particle_force_registry->addParticleListRegistry(_particles, aux);
+	//_force_generators.push_back(explosionGen);
 }
 
 ParticleGenerator* ParticleSystem::getParticleGenerator(const string& name) {

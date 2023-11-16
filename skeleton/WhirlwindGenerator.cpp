@@ -1,9 +1,9 @@
 #include "WhirlwindGenerator.h"
 
 void WhirlwindGenerator::updateForce(Particle* particle, double t) {
-	if (fabs(particle->_mass * -1) < 1e-10) //ponia _inv_mass
+	if (fabs(1/particle->_mass) < 1e-10)//ponia _inv_mass
 		return;
-	if (isInZone(particle)) {
+	if (isInZone(particle, _zone)) {
 		//Compute the Drag force
 		Vector3 p = particle->_pose.p;
 

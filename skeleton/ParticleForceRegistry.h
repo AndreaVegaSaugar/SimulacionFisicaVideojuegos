@@ -8,7 +8,7 @@ class ParticleForceRegistry : public std::multimap<ForceGenerator*, Particle*> {
 public:
 	void updateForces(double duration) {
 		for (auto it = begin(); it != end(); ++it) {
-			it->first->updateForce(it->second, duration);
+			if (it->second->alive) it->first->updateForce(it->second, duration);
 		}
 	}
 
@@ -22,6 +22,23 @@ public:
 				addRegistry((*it), part);
 			}
 		}
+	}
+	void addParticleListRegistrySingleGen(std::list<Particle*> p, ForceGenerator* l) {
+		for (Particle* part : p) {
+			addRegistry(l, part);
+		}
+	}
+
+	void deleteGeneratorRegistry(ForceGenerator* f) {
+		//erase(it);
+		for (auto it = begin(); it != end();) {
+			if (it->first == f) {
+				it = erase(it);
+				//std::cout << "borrado mapa" << std::endl;
+			}
+			else ++it;
+		}
+
 	}
 
 	void deleteParticleRegistry(Particle* p) {

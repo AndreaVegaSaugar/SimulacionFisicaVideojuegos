@@ -10,12 +10,6 @@
 
 using namespace std;
 
-//struct Zone {
-//	float x_Max, x_Min;
-//	float y_Max, y_Min;
-//	float z_Max, z_Min;
-//};
-
 class ParticleSystem
 {
 protected:
@@ -23,6 +17,7 @@ protected:
 	list<ParticleGenerator*> _particle_generators;
 	FireworkGenerator* _firework_generator = nullptr;
 	list<ForceGenerator*> _force_generators;
+	list<ExplosionGenerator*> _explosion_generators;
 	ParticleForceRegistry* _particle_force_registry;
 	Zone _zone;
 	Vector3 _gravity;

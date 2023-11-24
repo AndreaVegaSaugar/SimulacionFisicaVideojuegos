@@ -9,6 +9,7 @@ protected:
 
 public:
 	std::string _name;
+	bool _alive = true;
 	virtual void updateForce(Particle* particle, double t) = 0;
 	double _t = 0.0; // If starting negative --> eternal
 	double _duration = -1e10;

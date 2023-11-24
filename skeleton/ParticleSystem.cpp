@@ -2,7 +2,7 @@
 
 ParticleSystem::ParticleSystem(const Vector3& g) {
 	_gravity = g;
-	_zone.x_Max = 800; _zone.x_Min = -800; _zone.y_Max = 800; _zone.y_Min = -800; _zone.z_Max = 800; _zone.z_Min = -800;
+	_zone.x_Max = 500; _zone.x_Min = -500; _zone.y_Max = 500; _zone.y_Min = -500; _zone.z_Max = 500; _zone.z_Min = -500;
 
 	//_particle_generators.push_back(new GaussianParticleGenerator("fuente", Vector3(1, 1, 1), Vector3(10, 10, 10), Vector3(0, 0, 0), Vector3(0, 30, 0), 1));
 	//_particle_generators.push_back(new UniformParticleGenerator("fuente", Vector3(1, 1, 1), Vector3(-1, -1, -1), Vector3(50, 50, 50), Vector3(-50, 10, -50), 1));
@@ -30,7 +30,15 @@ ParticleSystem::~ParticleSystem() {
 }
 
 void ParticleSystem::update(double t) {
-	
+	for (auto it = _explosion_generators.begin(); it != _explosion_generators.end();) {
+		if (!(*it)->updateTime(t)) {
+			_particle_force_registry->deleteGeneratorRegistry(*it);
+			delete (*it);
+			it = _explosion_generators.erase(it);
+			//std::cout << "borrado lista" << std::endl;
+		}
+		else ++it;
+	}
 	for (auto it = _particles.begin(); it != _particles.end();) {
 		if ((*it)->isAlive() && isInZone(*it)) {
 			(*it)->integrate(t);
@@ -61,9 +69,9 @@ void ParticleSystem::generateFirework() {
 
 void ParticleSystem::generateExplosion() {
 	std::list<ForceGenerator*> aux;
-	aux.push_back(new ExplosionGenerator(10000, 500, 20));
-	_particle_force_registry->addParticleListRegistry(_particles, aux);
-	//_force_generators.push_back(explosionGen);
+	auto explosionGen = new ExplosionGenerator(Vector3(0, 20, 0), 5, 10000, 500, 20);
+	_particle_force_registry->addParticleListRegistrySingleGen(_particles, explosionGen);
+	_explosion_generators.push_back(explosionGen);
 }
 
 ParticleGenerator* ParticleSystem::getParticleGenerator(const string& name) {

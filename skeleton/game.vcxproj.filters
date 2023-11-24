@@ -23,6 +23,8 @@
     <ClCompile Include="ParticleDragGenerator.cpp" />
     <ClCompile Include="WhirlwindGenerator.cpp" />
     <ClCompile Include="ExplosionGenerator.cpp" />
+    <ClCompile Include="SpringForceGenerator.cpp" />
+    <ClCompile Include="AnchoredSpring.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -49,6 +51,8 @@
     <ClInclude Include="ParticleDragGenerator.h" />
     <ClInclude Include="WhirlwindGenerator.h" />
     <ClInclude Include="ExplosionGenerator.h" />
+    <ClInclude Include="SpringForceGenerator.h" />
+    <ClInclude Include="AnchoredSpring.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

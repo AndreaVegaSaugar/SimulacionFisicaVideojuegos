@@ -130,7 +130,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		//gun->shoot(cannonBall, GetCamera()->getTransform().p, GetCamera()->getDir());
 		break;
 	}
-	case 'L':
+	case 'P':
 	{
 		//gun->shoot(laser, GetCamera()->getTransform().p, GetCamera()->getDir());
 		break;
@@ -138,6 +138,30 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case 'E':
 	{
 		particleSystem->generateExplosion();
+		break;
+	}
+	case 'K':
+	{
+		int i = 2;
+		particleSystem->changeSpringConstant(i);
+		particleSystem->changeAnchoredSpringConstant(i);
+		particleSystem->changeElasticBandConstant(i);
+		break;
+	}
+	case 'L':
+	{
+		int i = -2;
+		particleSystem->changeSpringConstant(i);
+		particleSystem->changeAnchoredSpringConstant(i);
+		particleSystem->changeElasticBandConstant(i);
+		break;
+	}
+	case 'F':
+	{
+		particleSystem->addForceToSpring();
+		particleSystem->addForceToAnchoredSpring();
+		particleSystem->addForceToElasticBand();
+		particleSystem->addMassToBuoyancy();
 		break;
 	}
 	default:

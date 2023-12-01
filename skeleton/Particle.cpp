@@ -17,13 +17,32 @@ Particle::Particle(Vector3 pos, Vector3 vel, Vector3 acc, float damp, double dur
 	_damp = damp;
 	_duration = duration;
 	_mass = mass;
-	_size = size;
 	_color = color;
 	_isModel = isModel;
 
-	PxSphereGeometry sphere(_size);
-	PxShape* shape = CreateShape(sphere);
-	if(!_isModel) renderItem = new RenderItem(shape, &_pose, _color);
+	PxShape* _shape;
+	PxSphereGeometry sphere(size);
+	_shape = CreateShape(sphere);
+
+	if(!_isModel) renderItem = new RenderItem(_shape, &_pose, _color);
+}
+
+Particle::Particle(Vector3 pos, Vector3 vel, Vector3 acc, float damp, double duration, float mass, Vector3 size, Vector4 color, bool isModel) {
+	_vel = vel;
+	_pose = PxTransform(pos);
+	_acc = acc;
+	_damp = damp;
+	_duration = duration;
+	_mass = mass;
+	_color = color;
+	_size = size;
+	_isModel = isModel;
+
+	PxShape* _shape;
+	PxBoxGeometry square(size);
+	_shape = CreateShape(square);
+
+	if (!_isModel) renderItem = new RenderItem(_shape, &_pose, _color);
 }
 
 Particle::~Particle() {

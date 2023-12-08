@@ -10,7 +10,9 @@ std::list<Particle*> Firework::explode() {
 		f = generator[_gen + 1];
 		f->_color = _generator->color;
 
-		GaussianParticleGenerator* gP = new GaussianParticleGenerator("aux", Vector3(0.01, 0.01, 0.01), Vector3(9, 9, 9), _pose.p, f->_vel, _n_hijos);
+		
+		
+		ParticleGenerator* gP = new GaussianParticleGenerator("aux", Vector3(0.01, 0.01, 0.01), Vector3(9, 9, 9), _pose.p, f->_vel, _n_hijos);
 		gP->setParticle(f);
 		list = gP->generateParticles();
 		delete gP;

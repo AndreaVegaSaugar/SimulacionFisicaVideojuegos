@@ -10,6 +10,7 @@
 #include "Particle.h"
 #include "Gun.h"
 #include "ParticleSystem.h"
+#include "SolidRigidSystem.h"
 
 #include <iostream>
 
@@ -37,6 +38,8 @@ Particle* particle = nullptr;
 Gun* gun = nullptr;
 ParticleSystem* particleSystem = nullptr;
 
+SolidRigidSystem* solidRigidSystem = nullptr;
+
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
@@ -61,15 +64,34 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	
+	// SUELO (RIGIDO ESTATICO)
+	PxRigidStatic* Suelo = gPhysics->createRigidStatic(PxTransform({ 0, 0, 0 }));
+	PxShape* shape = CreateShape(PxBoxGeometry(100, 0.1, 100));
+	Suelo->attachShape(*shape);
+	gScene->addActor(*Suelo);
+	RenderItem* item;
+	item = new RenderItem(shape, Suelo, { 0.8, 0.8, 0.8, 1 });
+
+	solidRigidSystem = new SolidRigidSystem(gScene, gPhysics);
+
+	//// ELEMENTOS DINAMICOS
+	//PxRigidDynamic* new_solid = gPhysics->createRigidDynamic(PxTransform({ -70, 50, -70 }));
+	//new_solid->setLinearVelocity({ 0, 5, 0 });
+	//new_solid->setAngularVelocity({ 0, 0, 0 });
+	//PxShape* shape_ad = CreateShape(PxBoxGeometry(5, 5, 5));
+	//new_solid->attachShape(*shape_ad);
+	//RenderItem* item2;
+	//item2 = new RenderItem(shape_ad, new_solid, { 3, 0, 0, 1 });
+
+	//PxRigidBodyExt::updateMassAndInertia(*new_solid, 0.15);
+	//gScene->addActor(*new_solid);
+
+
 	//particle = new Particle(Vector3(0, 0, 0), Vector3(0, 10, 0));
-	
 	//particle = new Particle(Vector3(0, 0, 0), Vector3(0, 10, 0), Vector3(0, 0, 10), 0.001);
-	
 	//gun = new Gun();
-
-	particleSystem = new ParticleSystem();
-
+	// 
+	//particleSystem = new ParticleSystem();
 }
 
 
@@ -83,9 +105,11 @@ void stepPhysics(bool interactive, double t)
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 
+	solidRigidSystem->update(t);
+
 	//particle->integrate(t);
 	//gun->integrate(t);
-	particleSystem->update(t);
+	//particleSystem->update(t);
 }
 
 // Function to clean data
@@ -106,8 +130,10 @@ void cleanupPhysics(bool interactive)
 	
 	gFoundation->release();
 
+	delete solidRigidSystem;
+
 	//delete gun;
-	delete particleSystem;
+	//delete particleSystem;
 }
 
 // Function called when a key is pressed
@@ -119,51 +145,52 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 	//case 'B': break;
 	//case ' ':	break;
-	case ' ':
-	{
-		//gun->shoot(bullet, GetCamera()->getTransform().p, GetCamera()->getDir());
-		particleSystem->generateFirework();
-		break;
-	}
-	case 'C':
-	{
-		//gun->shoot(cannonBall, GetCamera()->getTransform().p, GetCamera()->getDir());
-		break;
-	}
-	case 'P':
-	{
-		//gun->shoot(laser, GetCamera()->getTransform().p, GetCamera()->getDir());
-		break;
-	}
+	//case ' ':
+	//{
+	//	//gun->shoot(bullet, GetCamera()->getTransform().p, GetCamera()->getDir());
+	//	particleSystem->generateFirework();
+	//	break;
+	//}
+	//case 'C':
+	//{
+	//	//gun->shoot(cannonBall, GetCamera()->getTransform().p, GetCamera()->getDir());
+	//	break;
+	//}
+	//case 'P':
+	//{
+	//	//gun->shoot(laser, GetCamera()->getTransform().p, GetCamera()->getDir());
+	//	break;
+	//}
 	case 'E':
 	{
-		particleSystem->generateExplosion();
+		//particleSystem->generateExplosion();
+		solidRigidSystem->generateExplosion();
 		break;
 	}
-	case 'K':
-	{
-		int i = 2;
-		particleSystem->changeSpringConstant(i);
-		particleSystem->changeAnchoredSpringConstant(i);
-		particleSystem->changeElasticBandConstant(i);
-		break;
-	}
-	case 'L':
-	{
-		int i = -2;
-		particleSystem->changeSpringConstant(i);
-		particleSystem->changeAnchoredSpringConstant(i);
-		particleSystem->changeElasticBandConstant(i);
-		break;
-	}
-	case 'F':
-	{
-		particleSystem->addForceToSpring();
-		particleSystem->addForceToAnchoredSpring();
-		particleSystem->addForceToElasticBand();
-		particleSystem->addMassToBuoyancy();
-		break;
-	}
+	//case 'K':
+	//{
+	//	int i = 2;
+	//	particleSystem->changeSpringConstant(i);
+	//	particleSystem->changeAnchoredSpringConstant(i);
+	//	particleSystem->changeElasticBandConstant(i);
+	//	break;
+	//}
+	//case 'L':
+	//{
+	//	int i = -2;
+	//	particleSystem->changeSpringConstant(i);
+	//	particleSystem->changeAnchoredSpringConstant(i);
+	//	particleSystem->changeElasticBandConstant(i);
+	//	break;
+	//}
+	//case 'F':
+	//{
+	//	particleSystem->addForceToSpring();
+	//	particleSystem->addForceToAnchoredSpring();
+	//	particleSystem->addForceToElasticBand();
+	//	particleSystem->addMassToBuoyancy();
+	//	break;
+	//}
 	default:
 		break;
 	}

@@ -10,8 +10,6 @@ SolidRigidSystem::SolidRigidSystem(PxScene* scene, PxPhysics* physics) {
 	_solidRigid_generators.push_back(new GaussianSolidRigidGenerator(this->scene, physics, "chuloGaussian", { 20, 0.01, 5 }, { 0.01, 5, 0.01 }, { 50, 50, 0.01 }, { 0.01, -15, 0.01 }, 1));
 
 	generateTornado();
-
-	//_solidRigids.push_back(new SolidRigid(scene, physics, { 0, 0, 0 }, { 0, 10, 0 }, 10, 0.15, 5, { 3, 0, 0, 1 }, false));
 }
 
 SolidRigidSystem::~SolidRigidSystem() {

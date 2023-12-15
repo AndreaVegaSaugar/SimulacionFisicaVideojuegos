@@ -4,6 +4,7 @@
 #include "UniformSolidRigidGenerator.h"
 #include "SolidRigidForceRegistry.h"
 #include "ExplosionSolidRigidGenerator.h"
+#include "WhirlwindSolidRigidGenerator.h"
 #include <iostream>
 
 using namespace std;
@@ -24,6 +25,7 @@ public:
 	~SolidRigidSystem();
 	void update(double t);
 	void generateExplosion();
+	void generateTornado();
 
 	bool isInZone(SolidRigid* p) {
 		return ((p->_pose.p.x < _zone.x_Max) && (p->_pose.p.x > _zone.x_Min) &&

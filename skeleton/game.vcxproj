@@ -275,12 +275,14 @@
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Render.cpp" />
+    <ClCompile Include="SolidRigidDragGenerator.cpp" />
     <ClCompile Include="SolidRigidGenerator.cpp" />
     <ClCompile Include="SolidRigidSystem.cpp" />
     <ClCompile Include="SpringForceGenerator.cpp" />
     <ClCompile Include="UniformParticleGenerator.cpp" />
     <ClCompile Include="UniformSolidRigidGenerator.cpp" />
     <ClCompile Include="WhirlwindGenerator.cpp" />
+    <ClCompile Include="WhirlwindSolidRigidGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnchoredSpring.h" />
@@ -307,6 +309,7 @@
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
+    <ClInclude Include="SolidRigidDragGenerator.h" />
     <ClInclude Include="SolidRigidForceGenerator.h" />
     <ClInclude Include="SolidRigidForceRegistry.h" />
     <ClInclude Include="SolidRigidGenerator.h" />
@@ -315,6 +318,7 @@
     <ClInclude Include="UniformParticleGenerator.h" />
     <ClInclude Include="UniformSolidRigidGenerator.h" />
     <ClInclude Include="WhirlwindGenerator.h" />
+    <ClInclude Include="WhirlwindSolidRigidGenerator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

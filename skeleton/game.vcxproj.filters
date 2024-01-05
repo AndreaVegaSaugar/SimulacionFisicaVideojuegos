@@ -35,6 +35,7 @@
     <ClCompile Include="ExplosionSolidRigidGenerator.cpp" />
     <ClCompile Include="WhirlwindSolidRigidGenerator.cpp" />
     <ClCompile Include="SolidRigidDragGenerator.cpp" />
+    <ClCompile Include="Entity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -75,6 +76,7 @@
     <ClInclude Include="SolidRigidForceGenerator.h" />
     <ClInclude Include="WhirlwindSolidRigidGenerator.h" />
     <ClInclude Include="SolidRigidDragGenerator.h" />
+    <ClInclude Include="Entity.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

@@ -1,5 +1,6 @@
 #pragma once
 #include "Particle.h"
+#include "SolidRigid.h"
 
 class ForceGenerator {
 protected:
@@ -10,7 +11,7 @@ protected:
 public:
 	std::string _name;
 	bool _alive = true;
-	virtual void updateForce(Particle* particle, double t) = 0;
+	virtual void updateForce(Entity* particle, double t) = 0;
 	double _t = 0.0; // If starting negative --> eternal
 	double _duration = -1e10;
 	inline bool updateTime(double t) {
@@ -19,7 +20,7 @@ public:
 	}
 	virtual ~ForceGenerator() {}
 
-	bool isInZone(Particle* p, Zone _zone) {
+	bool isInZone(Entity* p, Zone _zone) {
 		return ((p->_pose.p.x < _zone.x_Max) && (p->_pose.p.x > _zone.x_Min) &&
 			(p->_pose.p.y < _zone.y_Max) && (p->_pose.p.y > _zone.y_Min) &&
 			(p->_pose.p.z < _zone.z_Max) && (p->_pose.p.z > _zone.z_Min));

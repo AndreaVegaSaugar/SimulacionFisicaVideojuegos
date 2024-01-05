@@ -2,9 +2,9 @@
 #include <map>
 #include "ForceGenerator.h"
 
-typedef std::pair<ForceGenerator*, Particle*> FRPair;
+typedef std::pair<ForceGenerator*, Entity*> FRPair;
 
-class ParticleForceRegistry : public std::multimap<ForceGenerator*, Particle*> {
+class ParticleForceRegistry : public std::multimap<ForceGenerator*, Entity*> {
 public:
 	void updateForces(double duration) {
 		for (auto it = begin(); it != end(); ++it) {
@@ -12,19 +12,19 @@ public:
 		}
 	}
 
-	void addRegistry(ForceGenerator* fg, Particle* p) {
+	void addRegistry(ForceGenerator* fg, Entity* p) {
 		insert(FRPair(fg, p));
 	}
 
-	void addParticleListRegistry(std::list<Particle*> p, list<ForceGenerator*> l) {
+	void addParticleListRegistry(std::list<Entity*> p, list<ForceGenerator*> l) {
 		for (auto it = l.begin(); it != l.end(); ++it) {
-			for (Particle* part : p) {
+			for (Entity* part : p) {
 				addRegistry((*it), part);
 			}
 		}
 	}
-	void addParticleListRegistrySingleGen(std::list<Particle*> p, ForceGenerator* l) {
-		for (Particle* part : p) {
+	void addParticleListRegistrySingleGen(std::list<Entity*> p, ForceGenerator* l) {
+		for (Entity* part : p) {
 			addRegistry(l, part);
 		}
 	}
@@ -41,7 +41,7 @@ public:
 
 	}
 
-	void deleteParticleRegistry(Particle* p) {
+	void deleteParticleRegistry(Entity* p) {
 		for (auto it = begin(); it != end();) {
 			auto ot = it++;
 			if (ot->second == p)

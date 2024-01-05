@@ -1,9 +1,9 @@
 #include "Firework.h"
 #include "FireworkGenerator.h"
 
-std::list<Particle*> Firework::explode() {
+std::list<Entity*> Firework::explode() {
 	auto generator = _generator->_firework_pool;
-	std::list<Particle*> list;
+	std::list<Entity*> list;
 
 	Particle* f;
 	if (_gen < generator.size() - 1) {

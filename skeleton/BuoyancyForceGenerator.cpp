@@ -1,6 +1,6 @@
 #include "BuoyancyForceGenerator.h"
 
-void BuoyancyForceGenerator::updateForce(Particle* particle, double t) {
+void BuoyancyForceGenerator::updateForce(Entity* particle, double t) {
 	float h = particle->_pose.p.y;
 	float h0 = _liquid_particle->_pose.p.y;
 

@@ -1,6 +1,6 @@
 #include "SpringForceGenerator.h"
 
-SpringForceGenerator::SpringForceGenerator(double k, double resting_length, Particle* other) : ForceGenerator(){
+SpringForceGenerator::SpringForceGenerator(double k, double resting_length, Entity* other) : ForceGenerator(){
 	_k = k;
 	_resting_length = resting_length;
 	_other = other;
@@ -10,7 +10,7 @@ SpringForceGenerator::~SpringForceGenerator() {
 
 }
 
-void SpringForceGenerator::updateForce(Particle* particle, double t) {
+void SpringForceGenerator::updateForce(Entity* particle, double t) {
 	Vector3 relative_pos_vector = _other->_pose.p - particle->_pose.p;
 
 	const float lenght = relative_pos_vector.normalize();

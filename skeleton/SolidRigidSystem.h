@@ -17,7 +17,7 @@ protected:
 	list<SolidRigidForceGenerator*> _solidRigid_force_generators;
 	list<ExplosionSolidRigidGenerator*> _explosion_solidRigid_generators;
 	SolidRigidForceRegistry* _solidRigid_force_registry;
-	Zone2 _zone;
+	Zone _zone;
 	PxScene* scene;
 
 public:

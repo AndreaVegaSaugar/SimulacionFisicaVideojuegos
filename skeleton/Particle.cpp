@@ -1,48 +1,28 @@
 #include "Particle.h"
 
-Particle::Particle(Vector3 Pos, Vector3 Vel) {
-	_vel = Vel;
-	_pose = PxTransform(Pos);
-
-	PxSphereGeometry sphere(1);
-	PxShape* shape = CreateShape(sphere);
-	Vector4 color = { 255, 255, 0, 1 };
-	renderItem = new RenderItem(shape, &_pose, color);
-}
-
-Particle::Particle(Vector3 pos, Vector3 vel, Vector3 acc, float damp, double duration, float mass, float size, Vector4 color, bool isModel) {
+Particle::Particle(Vector3 pos, Vector3 vel, float damp, double duration, float mass, Shape shape, Vector3 size, Vector4 color, bool isModel) {
 	_vel = vel;
 	_pose = PxTransform(pos);
-	_acc = acc;
 	_damp = damp;
 	_duration = duration;
 	_mass = mass;
-	_color = color;
-	_isModel = isModel;
-
-	PxShape* _shape;
-	PxSphereGeometry sphere(size);
-	_shape = CreateShape(sphere);
-
-	if(!_isModel) renderItem = new RenderItem(_shape, &_pose, _color);
-}
-
-Particle::Particle(Vector3 pos, Vector3 vel, Vector3 acc, float damp, double duration, float mass, Vector3 size, Vector4 color, bool isModel) {
-	_vel = vel;
-	_pose = PxTransform(pos);
-	_acc = acc;
-	_damp = damp;
-	_duration = duration;
-	_mass = mass;
-	_color = color;
+	_shape = shape;
 	_size = size;
+	_color = color;
 	_isModel = isModel;
 
-	PxShape* _shape;
-	PxBoxGeometry square(size);
-	_shape = CreateShape(square);
+	PxShape* auxShape;
 
-	if (!_isModel) renderItem = new RenderItem(_shape, &_pose, _color);
+	if (_shape == SPHERE) {
+		PxSphereGeometry sphere(size.x);
+		auxShape = CreateShape(sphere);
+	}
+	else  {
+		PxBoxGeometry square(size);
+		auxShape = CreateShape(square);
+	}
+
+	if (!_isModel) renderItem = new RenderItem(auxShape, &_pose, _color);
 }
 
 Particle::~Particle() {
@@ -50,17 +30,14 @@ Particle::~Particle() {
 }
 
 void Particle::integrate(double t) {
-	//pose.p += vel * t;
+
 	if (alive) {
 
-		//_pose.p += _vel * t;
-		//// Update linear velocity
-		//_vel += /*_acc*/Vector3(0, _gravity, 0) * t;
-		//// Impose drag (damping)
-		//_vel *= powf(_damp, t);
+		if (_duration != -1) {
+			_auxDuration += t;
+			alive = _auxDuration < _duration;
+		}
 
-		_auxDuration += t;
-		alive = _auxDuration < _duration;
 		// Get the accel considering the force accum
 		Vector3 resulting_accel = _force * (1/_mass);
 		_vel += resulting_accel * t; // Ex. 1.3 --> add acceleration

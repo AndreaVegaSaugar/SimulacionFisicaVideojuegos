@@ -1,22 +1,30 @@
 #pragma once
-#include "Proyectil.h"
+#include "Particle.h"
+#include "SolidRigid.h"
 #include <vector>
+#include <list>
 
 using namespace physx;
 
-enum pType{bullet, laser, cannonBall};
+enum pType { RIFLE, SHOTGUN };
 
 class Gun
 {
 public:
-	Gun() { };
+	Gun(PxScene* scene, PxPhysics* physics, pType _type) : type(_type) { 
+	
+		//weapon = new SolidRigid(scene, physics, pos, CUBE, size, {10, 10, 10, 1});
+	};
+
 	~Gun();
 
-	void integrate(double t);
-	void shoot(pType type, Vector3 camPos, Vector3 camDir);
+	Entity* shoot( int x, int y);
+	inline void changeGun(pType newType) {
+		type = newType;
+	}
 
 protected:
-	std::vector<Proyectil*> balas;
-	float vel;
-	float lifeTime;
+	pType type;
+	SolidRigid* weapon;
+	//solido rigido con forma de el cañon del arma
 };

@@ -1,6 +1,6 @@
 #include "WhirlwindGenerator.h"
 
-void WhirlwindGenerator::updateForce(Particle* particle, double t) {
+void WhirlwindGenerator::updateForce(Entity* particle, double t) {
 	if (fabs(1/particle->_mass) < 1e-10)//ponia _inv_mass
 		return;
 	if (isInZone(particle, _zone)) {

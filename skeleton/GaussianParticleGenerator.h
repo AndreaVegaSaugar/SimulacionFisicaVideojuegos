@@ -27,7 +27,22 @@ public:
 		vel_y = new std::normal_distribution<float>(mean_vel.y, std_dev_vel.y);
 		vel_z = new std::normal_distribution<float>(mean_vel.z, std_dev_vel.z);
 	}
+
+	GaussianParticleGenerator(PxScene* scene, PxPhysics* physics, std::string name, Vector3 std_dev_pos, Vector3 std_dev_vel, Vector3 mean_pos, Vector3 mean_vel, int n_solidRigids) : ParticleGenerator(scene, physics), _std_dev_pos(std_dev_pos), _std_dev_vel(std_dev_vel), _mean_pos(mean_pos), _mean_vel(mean_vel) {
+		_name = name;
+		setNSolidRigids(n_solidRigids);
+
+		pos_x = new std::normal_distribution<float>(mean_pos.x, std_dev_pos.x);
+		pos_y = new std::normal_distribution<float>(mean_pos.y, std_dev_pos.y);
+		pos_z = new std::normal_distribution<float>(mean_pos.z, std_dev_pos.z);
+
+		vel_x = new std::normal_distribution<float>(mean_vel.x, std_dev_vel.x);
+		vel_y = new std::normal_distribution<float>(mean_vel.y, std_dev_vel.y);
+		vel_z = new std::normal_distribution<float>(mean_vel.z, std_dev_vel.z);
+	}
+
 	~GaussianParticleGenerator();
-	virtual list<Particle*> generateParticles() override;
+	virtual list<Entity*> generateParticles() override;
+	virtual list<Entity*> generateSolidRigids() override;
 };
 

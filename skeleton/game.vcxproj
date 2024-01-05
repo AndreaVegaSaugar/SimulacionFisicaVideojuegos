@@ -257,6 +257,7 @@
     <ClCompile Include="BuoyancyForceGenerator.cpp" />
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="ElasticBandGenerator.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="ExplosionGenerator.cpp" />
     <ClCompile Include="ExplosionSolidRigidGenerator.cpp" />
     <ClCompile Include="Firework.cpp" />
@@ -290,6 +291,7 @@
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="ElasticBandGenerator.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="ExplosionGenerator.h" />
     <ClInclude Include="ExplosionSolidRigidGenerator.h" />
     <ClInclude Include="Firework.h" />

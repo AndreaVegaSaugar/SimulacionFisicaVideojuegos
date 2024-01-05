@@ -12,7 +12,7 @@ public:
 		_center = center;
 		_duration = lifeTime;
 	}
-	void updateForce(Particle* particle, double t);
+	void updateForce(Entity* particle, double t);
 	inline void setAlive(bool alive) { _alive = alive; }
 
 protected:

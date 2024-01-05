@@ -255,6 +255,8 @@ void setupDefaultWindow(const char *name)
 	int mainHandle = glutCreateWindow(name);
 	glutSetWindow(mainHandle);
 	glutReshapeFunc(reshapeCallback);
+
+	glutFullScreen();                    //OWWW YEAHHHHHHHHHH BABYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 	
 	delete[] namestr;
 }
@@ -289,7 +291,9 @@ void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, PxReal clipNe
 
 	// Display text
 	glColor4f(1.0f, 0.2f, 0.2f, 1.0f);
-	drawText(display_text, 0, 0);
+	drawText(display_text, 5, 5);
+	glColor4f(5.0f, 0.0f, 0.0f, 1.0f);
+	drawText(info_text, glutGet(GLUT_WINDOW_WIDTH) / 7, 100);
 
 	// Setup camera
 	glMatrixMode(GL_PROJECTION);

@@ -1,6 +1,6 @@
 #include "ParticleDragGenerator.h"
 
-void ParticleDragGenerator::updateForce(Particle* particle, double t) {
+void ParticleDragGenerator::updateForce(Entity* particle, double t) {
 	//Check that the particle has finite mass
 	if (fabs(1/particle->_mass) < 1e-10) //ponia _inv_mass
 		return;

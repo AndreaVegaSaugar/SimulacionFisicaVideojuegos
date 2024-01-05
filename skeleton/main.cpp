@@ -14,7 +14,9 @@
 
 #include <iostream>
 
-std::string display_text = "This is a test";
+std::string display_text = "Elf Hunt: final project by Andrea Vega";
+
+std::string info_text = "info info bla bla";
 
 
 using namespace physx;
@@ -35,10 +37,21 @@ PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
 Particle* particle = nullptr;
-Gun* gun = nullptr;
+//Gun* gun = nullptr;
 ParticleSystem* particleSystem = nullptr;
 
 SolidRigidSystem* solidRigidSystem = nullptr;
+
+void createGameSystems() {
+	PxRigidStatic* Suelo = gPhysics->createRigidStatic(PxTransform({ 0, 0, 0 }));
+	PxShape* shape = CreateShape(PxBoxGeometry(100, 0.1, 100));
+	Suelo->attachShape(*shape);
+	gScene->addActor(*Suelo);
+	RenderItem* item;
+	item = new RenderItem(shape, Suelo, { 0.8, 0.8, 0.8, 1 });
+
+	solidRigidSystem = new SolidRigidSystem(gScene, gPhysics);
+}
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -64,34 +77,8 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	// SUELO (RIGIDO ESTATICO)
-	PxRigidStatic* Suelo = gPhysics->createRigidStatic(PxTransform({ 0, 0, 0 }));
-	PxShape* shape = CreateShape(PxBoxGeometry(100, 0.1, 100));
-	Suelo->attachShape(*shape);
-	gScene->addActor(*Suelo);
-	RenderItem* item;
-	item = new RenderItem(shape, Suelo, { 0.8, 0.8, 0.8, 1 });
-
-	solidRigidSystem = new SolidRigidSystem(gScene, gPhysics);
-
-	//// ELEMENTOS DINAMICOS
-	//PxRigidDynamic* new_solid = gPhysics->createRigidDynamic(PxTransform({ -70, 50, -70 }));
-	//new_solid->setLinearVelocity({ 0, 5, 0 });
-	//new_solid->setAngularVelocity({ 0, 0, 0 });
-	//PxShape* shape_ad = CreateShape(PxBoxGeometry(5, 5, 5));
-	//new_solid->attachShape(*shape_ad);
-	//RenderItem* item2;
-	//item2 = new RenderItem(shape_ad, new_solid, { 3, 0, 0, 1 });
-
-	//PxRigidBodyExt::updateMassAndInertia(*new_solid, 0.15);
-	//gScene->addActor(*new_solid);
-
-
-	//particle = new Particle(Vector3(0, 0, 0), Vector3(0, 10, 0));
-	//particle = new Particle(Vector3(0, 0, 0), Vector3(0, 10, 0), Vector3(0, 0, 10), 0.001);
-	//gun = new Gun();
-	// 
-	//particleSystem = new ParticleSystem();
+	particleSystem = new ParticleSystem(gScene, gPhysics);
+	//createGameSystems();
 }
 
 
@@ -105,11 +92,11 @@ void stepPhysics(bool interactive, double t)
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 
-	solidRigidSystem->update(t);
+	//solidRigidSystem->update(t);
 
 	//particle->integrate(t);
 	//gun->integrate(t);
-	//particleSystem->update(t);
+	particleSystem->update(t);
 }
 
 // Function to clean data
@@ -130,10 +117,17 @@ void cleanupPhysics(bool interactive)
 	
 	gFoundation->release();
 
-	delete solidRigidSystem;
+	//delete solidRigidSystem;
 
 	//delete gun;
-	//delete particleSystem;
+	delete particleSystem;
+}
+
+void mouseInput(int button, int state, int x, int y)
+{
+	//particleSystem->shoot(x, y);
+	PX_UNUSED(state);
+	PX_UNUSED(button);
 }
 
 // Function called when a key is pressed
@@ -164,7 +158,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case 'E':
 	{
 		//particleSystem->generateExplosion();
-		solidRigidSystem->generateExplosion();
+		//solidRigidSystem->generateExplosion();
 		break;
 	}
 	//case 'K':

@@ -1,7 +1,7 @@
 #include "ExplosionGenerator.h"
 
 
-void ExplosionGenerator::updateForce(Particle* particle, double t) {
+void ExplosionGenerator::updateForce(Entity* particle, double t) {
 	if (_alive) {
 		if (fabs(1 / particle->_mass) < 1e-10)
 			return;

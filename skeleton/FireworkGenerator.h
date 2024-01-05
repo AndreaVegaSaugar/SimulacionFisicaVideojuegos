@@ -16,6 +16,6 @@ public:
 
 	FireworkGenerator();
 	~FireworkGenerator();
-	Particle* shoot();
+	Entity* shoot();
 };
 

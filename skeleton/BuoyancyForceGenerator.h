@@ -7,10 +7,9 @@ class BuoyancyForceGenerator : public ForceGenerator
 public:
 	BuoyancyForceGenerator(float h, float d, Vector3 dim) : _height(h), _liquid_density(d), _dim(dim), ForceGenerator() {
 		//float mass = d * v;
-		_liquid_particle = new Particle({ 0, 0, 0 }, { 0 ,0 ,0 }, { 0, 0, 0 }, 0, 1000, 0, dim, { 0, 0, 255, 0 }, false);
-
+		_liquid_particle = new Particle({ 0, 0, 0 }, { 0 ,0 ,0 }, 0, -1, 0, CUBE, dim, { 0, 0, 255, 0 }, false);
 	};
-	void updateForce(Particle* particle, double t);
+	void updateForce(Entity* particle, double t);
 	inline void changeMass(double k) { _liquid_density += k; };
 	virtual ~BuoyancyForceGenerator();
 

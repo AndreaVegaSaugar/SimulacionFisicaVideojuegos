@@ -1,6 +1,6 @@
 #include "SolidRigid.h"
 
-SolidRigid::SolidRigid(physx::PxScene* scene, physx::PxPhysics* physics, Vector3 pos, Vector3 vel, double duration, float mass, Shape shape, Vector3 size, Vector4 color, bool isModel) {
+SolidRigid::SolidRigid(physx::PxScene* scene, physx::PxPhysics* physics, Vector3 pos, Vector3 vel, double duration, float mass, Shape shape, Vector3 size, Vector4 color, bool isModel):Entity() {
 	_scene = scene;
 	_physics = physics;
 	_vel = vel;
@@ -30,7 +30,7 @@ SolidRigid::SolidRigid(physx::PxScene* scene, physx::PxPhysics* physics, Vector3
 	_scene->addActor(*_rD);
 }
 
-SolidRigid::SolidRigid(physx::PxScene* scene, physx::PxPhysics* physics, Vector3 pos, Shape shape, Vector3 size, Vector4 color) {
+SolidRigid::SolidRigid(physx::PxScene* scene, physx::PxPhysics* physics, Vector3 pos, Shape shape, Vector3 size, Vector4 color) :Entity() {
 	_scene = scene;
 	_physics = physics;
 	_pose = PxTransform(pos);
@@ -49,7 +49,7 @@ SolidRigid::SolidRigid(physx::PxScene* scene, physx::PxPhysics* physics, Vector3
 	renderItem = new RenderItem(auxShape, _rS, _color);
 	
 
-	_scene->addActor(*_rD);
+	_scene->addActor(*_rS);
 }
 
 SolidRigid::~SolidRigid() {

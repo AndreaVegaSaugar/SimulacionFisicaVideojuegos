@@ -8,7 +8,7 @@ class Particle : public Entity
 public:
 
 	Particle(Vector3 Pos, Vector3 Vel, float damp, double duration, float mass, Shape shape, Vector3 size, Vector4 color, bool isModel);
-	~Particle();
+	virtual ~Particle();
 	void integrate(double t);
 	inline virtual Particle* clone() { return (new Particle(_pose.p, _vel, _damp, _duration, _mass, _shape, _size, _color, false)); }
 	
@@ -24,9 +24,6 @@ public:
 	// Accumulated force
 	
 	float _damp;
-
-protected:
-	RenderItem* renderItem;
 
 };
 

@@ -16,7 +16,7 @@
 
 std::string display_text = "Elf Hunt: final project by Andrea Vega";
 
-std::string info_text = "info info bla bla";
+std::string info_text = "";
 
 
 using namespace physx;
@@ -36,21 +36,25 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
-Particle* particle = nullptr;
-//Gun* gun = nullptr;
+
 ParticleSystem* particleSystem = nullptr;
 
-SolidRigidSystem* solidRigidSystem = nullptr;
+bool canShoot = true;
+float shootingTime = 0.2f;
+float auxShootTime = 0.0f;
+bool renderIntro = false;
 
-void createGameSystems() {
+void intro() {
+	renderIntro = true;
+}
+
+void startGame() {
 	PxRigidStatic* Suelo = gPhysics->createRigidStatic(PxTransform({ 0, 0, 0 }));
 	PxShape* shape = CreateShape(PxBoxGeometry(100, 0.1, 100));
 	Suelo->attachShape(*shape);
 	gScene->addActor(*Suelo);
 	RenderItem* item;
 	item = new RenderItem(shape, Suelo, { 0.8, 0.8, 0.8, 1 });
-
-	solidRigidSystem = new SolidRigidSystem(gScene, gPhysics);
 }
 
 // Initialize physics engine
@@ -70,7 +74,7 @@ void initPhysics(bool interactive)
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
-	sceneDesc.gravity = PxVec3(0.0f, -9.8f, 0.0f);
+	sceneDesc.gravity = PxVec3(0.0f, 0.0f, 0.0f);
 	gDispatcher = PxDefaultCpuDispatcherCreate(2);
 	sceneDesc.cpuDispatcher = gDispatcher;
 	sceneDesc.filterShader = contactReportFilterShader;
@@ -78,6 +82,7 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 
 	particleSystem = new ParticleSystem(gScene, gPhysics);
+	intro();
 	//createGameSystems();
 }
 
@@ -96,6 +101,14 @@ void stepPhysics(bool interactive, double t)
 
 	//particle->integrate(t);
 	//gun->integrate(t);
+	if (canShoot == false) {
+		auxShootTime += t;
+		if (auxShootTime >= shootingTime) {
+			auxShootTime = 0;
+			canShoot = true;
+		}
+	}
+
 	particleSystem->update(t);
 }
 
@@ -125,7 +138,10 @@ void cleanupPhysics(bool interactive)
 
 void mouseInput(int button, int state, int x, int y)
 {
-	//particleSystem->shoot(x, y);
+	if (canShoot && button == 0) {
+		particleSystem->shoot({ (GetCamera()->getMousePos().x / 5), (GetCamera()->getMousePos().y / 5), -1 }, { 0,0,0 });
+		canShoot = false;
+	}
 	PX_UNUSED(state);
 	PX_UNUSED(button);
 }

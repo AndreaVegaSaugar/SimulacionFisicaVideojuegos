@@ -32,6 +32,8 @@
 #include "Camera.h"
 #include <ctype.h>
 #include "foundation/PxMat33.h"
+#include "../core.hpp"
+#include <iostream>
 
 using namespace physx;
 
@@ -52,6 +54,16 @@ void Camera::handleMouse(int button, int state, int x, int y)
 	PX_UNUSED(button);
 	mMouseX = x;
 	mMouseY = y;
+}
+
+physx::PxVec2 Camera::getMousePos() {
+	std::cout << glutGet(GLUT_WINDOW_WIDTH) << " " << glutGet(GLUT_WINDOW_HEIGHT) << std::endl;
+
+	float ndcX = (2.0f * mMouseX) / glutGet(GLUT_WINDOW_WIDTH) - 1.0f;
+	float ndcY = 1.0f - (2.0f * mMouseY) / glutGet(GLUT_WINDOW_HEIGHT);
+	float viewX = ndcX * 5.0f;
+	float viewY = ndcY * 3.0f;
+	return { (float)viewX , (float)viewY };
 }
 
 bool Camera::handleKey(unsigned char key, int x, int y, float speed)

@@ -1,15 +1,19 @@
 #include "ParticleSystem.h"
 
 ParticleSystem::ParticleSystem(PxScene* scene, PxPhysics* physics) {
-	_zone.x_Max = 500; _zone.x_Min = -500; _zone.y_Max = 500; _zone.y_Min = -500; _zone.z_Max = 500; _zone.z_Min = -500;
+	_zone.x_Max = 500; _zone.x_Min = -500; _zone.y_Max = 500; _zone.y_Min = -100; _zone.z_Max = 500; _zone.z_Min = -500;
 	_scene = scene; _physics = physics;
 
 	_particle_force_registry = new ParticleForceRegistry();
 
 	_gravityGen = new GravityForceGenerator(Vector3(0, -10, 0));
 	_force_generators.push_back(_gravityGen);
+	//Entity* aux = new Particle({ 0,0,0 }, { 0,0,0 }, 0,1000, 0, SPHERE,{1,1,1},{1,1,1,1},false);
 
-	_particle_generators.push_back(new UniformParticleGenerator("fuente", Vector3(1, 5, 1), Vector3(-1, 5, -1), Vector3(10, 30, 10), Vector3(-10, 30, -10), 1));
+	//_particle_generators.push_back(new UniformParticleGenerator("fuente", Vector3(1, 5, 1), Vector3(-1, 5, -1), Vector3(10, 30, 10), Vector3(-10, 30, -10), 1));
+	//_particle_generators.push_back(new GaussianParticleGenerator("fuente", Vector3(1, 1, 1), Vector3(30, 1, 30), Vector3(1, 1, 1), Vector3(0, 30, 0), 1));
+
+	_gun = new Gun(scene, physics, RIFLE);
 }
 
 ParticleSystem::~ParticleSystem() {
@@ -20,16 +24,17 @@ ParticleSystem::~ParticleSystem() {
 }
 
 void ParticleSystem::update(double t) {
+	_gun->integrate(t);
 	_particle_force_registry->updateForces(t);
-	for (auto it = _explosion_generators.begin(); it != _explosion_generators.end();) {
-		if (!(*it)->updateTime(t)) {
-			_particle_force_registry->deleteGeneratorRegistry(*it);
-			delete (*it);
-			it = _explosion_generators.erase(it);
-			//std::cout << "borrado lista" << std::endl;
-		}
-		else ++it;
-	}
+	//for (auto it = _explosion_generators.begin(); it != _explosion_generators.end();) {
+	//	if (!(*it)->updateTime(t)) {
+	//		_particle_force_registry->deleteGeneratorRegistry(*it);
+	//		delete (*it);
+	//		it = _explosion_generators.erase(it);
+	//		//std::cout << "borrado lista" << std::endl;
+	//	}
+	//	else ++it;
+	//}
 	for (auto it = _entities.begin(); it != _entities.end();) {
 		if ((*it)->isAlive() && isInZone(*it)) {
 			(*it)->integrate(t);
@@ -50,7 +55,7 @@ void ParticleSystem::update(double t) {
 		auto it = _entities.begin();
 		_entities.splice(it, particleList);
 	}
-	for (ParticleGenerator* sG : _solidRigid_generators) {
+	/*for (ParticleGenerator* sG : _solidRigid_generators) {
 		sG->auxTime += t;
 		if (sG->auxTime >= sG->generationTime) {
 			auto solidRigidList = sG->generateSolidRigids();
@@ -61,7 +66,13 @@ void ParticleSystem::update(double t) {
 			auto it = _entities.begin();
 			_entities.splice(it, solidRigidList);
 		}
-	}
+	}*/
+}
+
+void ParticleSystem::shoot(Vector3 dir, Vector3 pos) {
+	auto it = _gun->shoot(dir, pos);
+	_particle_force_registry->addSingleParticleListRegistry(it, _force_generators);
+	_entities.push_back(it);
 }
 
 //void ParticleSystem::generateFirework() {

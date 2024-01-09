@@ -16,7 +16,7 @@ struct Zone {
 class Entity
 {
 protected:
-	RenderItem* renderItem;
+	RenderItem* renderItem = nullptr;
 
 public:
 	PxTransform _pose;
@@ -39,5 +39,9 @@ public:
 	virtual inline RenderItem* getRenderItem() { return renderItem; };
 	virtual inline int getVolume() { return (_size.x * _size.y * _size.z); };
 	virtual std::list<Entity*> onDeath() { std::list<Entity*> l; return l; };
+	Entity() {};
+	virtual ~Entity() {
+
+	}
 };
 

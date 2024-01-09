@@ -2,7 +2,7 @@
 
 void ParticleDragGenerator::updateForce(Entity* particle, double t) {
 	//Check that the particle has finite mass
-	if (fabs(1/particle->_mass) < 1e-10) //ponia _inv_mass
+	if (fabs(1/particle->_mass) < 1e-10)
 		return;
 	if (isInZone(particle, _zone)) {
 		Vector3 v = particle->_vel;

@@ -257,14 +257,14 @@ void setupDefaultWindow(const char *name)
 	glutReshapeFunc(reshapeCallback);
 
 	glutFullScreen();                    //OWWW YEAHHHHHHHHHH BABYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
-	
+
 	delete[] namestr;
 }
 
 void setupDefaultRenderState()
 {
 	// Setup default render states
-	glClearColor(0.3f, 0.4f, 0.5f, 1.0);
+	glClearColor(0.0f, 0.7f, 0.9f, 1.0);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_COLOR_MATERIAL);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -284,6 +284,19 @@ void setupDefaultRenderState()
 	glEnable(GL_LIGHT0);
 }
 
+void renderIntroText() {
+	glColor4f(0.0f, 8.0f, 0.0f, 1.0f);
+	drawText("Welcome to Elf Hunt!, ", 220, 350);
+	glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+	drawText("As a farmer, you have put a lot of effort into growing your veggies", 160, 335);
+	drawText("so you have to do everything in your hands to defend them. Sadly, ", 160, 320);
+	drawText("scarecrows dont work on elves and they love to steal food, so shoot", 160, 305);
+	drawText("them on sight! However be very careful: if more than 3 elves escape", 160, 290);
+	drawText("you will lose your harvest, and sometimes when shot they will", 160, 275);
+	drawText("release a burst of magic energy with unexpected consequences...", 160, 260);
+	glColor4f(7.0f, 0.0f, 0.0f, 1.0f);
+	drawText("CLICK TO START", 230, 130);
+}
 
 void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, PxReal clipNear, PxReal clipFar)
 {
@@ -292,8 +305,7 @@ void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, PxReal clipNe
 	// Display text
 	glColor4f(1.0f, 0.2f, 0.2f, 1.0f);
 	drawText(display_text, 5, 5);
-	glColor4f(5.0f, 0.0f, 0.0f, 1.0f);
-	drawText(info_text, glutGet(GLUT_WINDOW_WIDTH) / 7, 100);
+	if (renderIntro) renderIntroText();
 
 	// Setup camera
 	glMatrixMode(GL_PROJECTION);
@@ -403,7 +415,7 @@ void drawText(const std::string& text, int x, int y)
 	int length = text.length();
 
 	for (int i = 0; i < length; i++) {
-		glutBitmapCharacter(GLUT_BITMAP_9_BY_15, (int)text[i]);
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, (int)text[i]);
 	}
 	glPopMatrix();
 	glMatrixMode(GL_PROJECTION);

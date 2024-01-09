@@ -1,6 +1,6 @@
 #include "Particle.h"
 
-Particle::Particle(Vector3 pos, Vector3 vel, float damp, double duration, float mass, Shape shape, Vector3 size, Vector4 color, bool isModel) {
+Particle::Particle(Vector3 pos, Vector3 vel, float damp, double duration, float mass, Shape shape, Vector3 size, Vector4 color, bool isModel):Entity() {
 	_vel = vel;
 	_pose = PxTransform(pos);
 	_damp = damp;
@@ -26,7 +26,7 @@ Particle::Particle(Vector3 pos, Vector3 vel, float damp, double duration, float 
 }
 
 Particle::~Particle() {
-	if(!_isModel) renderItem->release();
+	if(renderItem != nullptr) renderItem->release();
 }
 
 void Particle::integrate(double t) {

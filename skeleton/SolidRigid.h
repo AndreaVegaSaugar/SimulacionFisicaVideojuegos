@@ -3,9 +3,6 @@
 
 class SolidRigid : public Entity
 {
-protected:
-	RenderItem* renderItem;
-
 public:
 
 
@@ -16,7 +13,7 @@ public:
 
 	SolidRigid(physx::PxScene* scene, PxPhysics* physics, Vector3 pos, Vector3 vel, double duration, float mass, Shape shape, Vector3 size, Vector4 color, bool isModel);
 	SolidRigid(physx::PxScene* scene, physx::PxPhysics* physics, Vector3 pos, Shape shape, Vector3 size, Vector4 color);
-	~SolidRigid();
+	virtual ~SolidRigid();
 	void integrate(double t);
 
 	inline virtual SolidRigid* clone() {

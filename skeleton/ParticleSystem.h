@@ -10,6 +10,7 @@
 #include "ElasticBandGenerator.h"
 #include "ParticleForceRegistry.h"
 #include "BuoyancyForceGenerator.h"
+#include "Gun.h"
 
 using namespace std;
 
@@ -26,6 +27,7 @@ protected:
 	list<ExplosionGenerator*> _explosion_generators;
 	ParticleForceRegistry* _particle_force_registry;
 	Zone _zone;
+	Gun* _gun;
 	GravityForceGenerator* _gravityGen;
 	SpringForceGenerator* _spring;
 	ElasticBandGenerator* _elasticBand;
@@ -42,6 +44,7 @@ public:
 	ParticleSystem(PxScene* scene, PxPhysics* physics);
 	~ParticleSystem();
 	void update(double t);
+	void shoot(Vector3 dir, Vector3 pos);
 	ParticleGenerator* getParticleGenerator(const string& name); 
 	FireworkGenerator* getFireworkGenerator() { return _firework_generator; };
 	/*void generateFirework();

@@ -28,6 +28,11 @@ public:
 			addRegistry(l, part);
 		}
 	}
+	void addSingleParticleListRegistry(Entity* p, list<ForceGenerator*> l) {
+		for (ForceGenerator* gen : l) {
+			addRegistry(gen, p);
+		}
+	}
 
 	void deleteGeneratorRegistry(ForceGenerator* f) {
 		//erase(it);

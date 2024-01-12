@@ -57,12 +57,11 @@ void Camera::handleMouse(int button, int state, int x, int y)
 }
 
 physx::PxVec2 Camera::getMousePos() {
-	std::cout << glutGet(GLUT_WINDOW_WIDTH) << " " << glutGet(GLUT_WINDOW_HEIGHT) << std::endl;
 
-	float ndcX = (2.0f * mMouseX) / glutGet(GLUT_WINDOW_WIDTH) - 1.0f;
-	float ndcY = 1.0f - (2.0f * mMouseY) / glutGet(GLUT_WINDOW_HEIGHT);
-	float viewX = ndcX * 5.0f;
-	float viewY = ndcY * 3.0f;
+	float x = (2.0f * mMouseX) / glutGet(GLUT_WINDOW_WIDTH) - 1.0f;
+	float y = 1.0f - (2.0f * mMouseY) / glutGet(GLUT_WINDOW_HEIGHT);
+	float viewX = x * 5.0f;
+	float viewY = y * 3.0f;
 	return { (float)viewX , (float)viewY };
 }
 

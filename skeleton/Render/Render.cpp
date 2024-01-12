@@ -297,6 +297,18 @@ void renderIntroText() {
 	glColor4f(7.0f, 0.0f, 0.0f, 1.0f);
 	drawText("CLICK TO START", 230, 130);
 }
+void renderUIText() {
+	glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+	drawText("Score: " + std::to_string(score), 10, 490);
+
+	if(rifleSelected) glColor4f(7.0f, 0.0f, 0.0f, 1.0f);
+	else glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+	drawText("RIFLE", 20, 45);
+
+	if (!rifleSelected) glColor4f(7.0f, 0.0f, 0.0f, 1.0f);
+	else glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+	drawText("SHOTGUN", 20, 30);
+}
 
 void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, PxReal clipNear, PxReal clipFar)
 {
@@ -306,6 +318,7 @@ void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, PxReal clipNe
 	glColor4f(1.0f, 0.2f, 0.2f, 1.0f);
 	drawText(display_text, 5, 5);
 	if (renderIntro) renderIntroText();
+	if (renderUI) renderUIText();
 
 	// Setup camera
 	glMatrixMode(GL_PROJECTION);

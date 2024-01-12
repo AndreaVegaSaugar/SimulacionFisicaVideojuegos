@@ -53,9 +53,9 @@ SolidRigid::SolidRigid(physx::PxScene* scene, physx::PxPhysics* physics, Vector3
 }
 
 SolidRigid::~SolidRigid() {
-	if (!_isModel) renderItem->release();
-	if(_rD != nullptr) _rD->release();
-	if (_rS != nullptr) _rD->release();
+	if (renderItem != nullptr) DeregisterRenderItem(renderItem);
+	if (_rS != nullptr) _rS->release();
+	if (_rD != nullptr) _rD->release();
 }
 
 void SolidRigid::integrate(double t) {
@@ -65,6 +65,7 @@ void SolidRigid::integrate(double t) {
 			alive = _auxDuration < _duration;
 		}
 		_pose = _rD->getGlobalPose();
+		_pose.p = _rD->getGlobalPose().p;
 		_vel = _rD->getLinearVelocity();
 	}
 }

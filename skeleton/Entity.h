@@ -40,8 +40,19 @@ public:
 	virtual inline int getVolume() { return (_size.x * _size.y * _size.z); };
 	virtual std::list<Entity*> onDeath() { std::list<Entity*> l; return l; };
 	Entity() {};
-	virtual ~Entity() {
+	virtual ~Entity() {}
 
+	bool checkCollision(Entity* other){
+
+		/*std::cout << _pose.p.x << " " << _pose.p.y << " " << _pose.p.z << std::endl;
+		std::cout << (other->_pose.p.x) << " " << (_pose.p.x - _size.x) << " " << (other->_pose.p.x) << " " << (_pose.p.x + _size.x) << std::endl;
+		std::cout << (other->_pose.p.y) << " " << (_pose.p.y - _size.y) << " " << (other->_pose.p.y) << " " << (_pose.p.y + _size.y) << std::endl;
+		std::cout << (other->_pose.p.z) << " " << (_pose.p.z - _size.z) << " " << (other->_pose.p.z) << " " << (_pose.p.z + _size.z) << std::endl;
+*/
+
+		return ((other->_pose.p.x + other->_size.x) >= (_pose.p.x - _size.x) && (other->_pose.p.x - other->_size.x) <= (_pose.p.x + _size.x) &&
+				(other->_pose.p.y + other->_size.y) >= (_pose.p.y - _size.y) && (other->_pose.p.y - other->_size.y) <= (_pose.p.y + _size.y) &&
+				(other->_pose.p.z + other->_size.z) >= (_pose.p.z - _size.z) && (other->_pose.p.z - other->_size.z) <= (_pose.p.z + _size.z));
 	}
 };
 

@@ -17,25 +17,44 @@ ParticleSystem::ParticleSystem(PxScene* scene, PxPhysics* physics) {
 }
 
 ParticleSystem::~ParticleSystem() {
+	if (_gun != nullptr) delete _gun;
 	for (auto it = _particle_generators.begin(); it != _particle_generators.end(); ++it) {
+		delete (*it);
+	}
+	for (auto it = _force_generators.begin(); it != _force_generators.end(); ++it) {
 		delete (*it);
 	}
 	if (_firework_generator != nullptr) delete _firework_generator;
 }
 
+void ParticleSystem::startGame() {
+	generateUISprings();
+	setDecoration();
+	_elfGenerator = new UniformParticleGenerator(_scene, _physics, "elfGenerator", Vector3(40, -25, -60), Vector3(-40, -25, -60), Vector3(10, 10, 0), Vector3(-10, 5, 0), 1);
+	_solidRigid_generators.push_back(_elfGenerator);
+
+}
+
+void ParticleSystem::checkCollisions(Entity* e) {
+	for (auto ot = _balas.begin(); ot != _balas.end(); ++ot) {
+		//std::cout << "system2: " << (*ot)->_pose.p.x << " " << (*ot)->_pose.p.y << " " << (*ot)->_pose.p.z << std::endl;
+		if ((*ot)->checkCollision(e)) {
+			(*ot)->alive = false;
+			e->alive = false;
+			//cout << "acierto" << endl;
+		}
+	}
+}
+
 void ParticleSystem::update(double t) {
 	_gun->integrate(t);
 	_particle_force_registry->updateForces(t);
-	//for (auto it = _explosion_generators.begin(); it != _explosion_generators.end();) {
-	//	if (!(*it)->updateTime(t)) {
-	//		_particle_force_registry->deleteGeneratorRegistry(*it);
-	//		delete (*it);
-	//		it = _explosion_generators.erase(it);
-	//		//std::cout << "borrado lista" << std::endl;
-	//	}
-	//	else ++it;
-	//}
+
 	for (auto it = _entities.begin(); it != _entities.end();) {
+		if (_balas.size() > 0) { 
+			//std::cout << "system1: " << (*_balas.begin())->_pose.p.x << " " << (*_balas.begin())->_pose.p.y << " " << (*_balas.begin())->_pose.p.z << std::endl;
+			checkCollisions(*it); 
+		}
 		if ((*it)->isAlive() && isInZone(*it)) {
 			(*it)->integrate(t);
 			++it;
@@ -49,30 +68,72 @@ void ParticleSystem::update(double t) {
 			it = _entities.erase(it);
 		}
 	}
+	for (auto it = _balas.begin(); it != _balas.end();) {
+		if ((*it)->isAlive() && isInZone(*it)) {
+			(*it)->integrate(t);
+			//std::cout << "INTEGRATE BALAS: " << (*it)->_pose.p.x << " " << (*it)->_pose.p.y << " " << (*it)->_pose.p.z << std::endl;
+			++it;
+		}
+		else {
+			_particle_force_registry->deleteParticleRegistry((*it));
+			delete (*it);
+			it = _balas.erase(it);
+		}
+	}
+	for (auto it = _UI.begin(); it != _UI.end();) {
+		if ((*it)->isAlive() && isInZone(*it)) {
+			(*it)->integrate(t);
+			++it;
+		}
+		else {
+			_particle_force_registry->deleteParticleRegistry((*it));
+			delete (*it);
+			it = _UI.erase(it);
+		}
+	}
 	for (ParticleGenerator* pG : _particle_generators) {
 		auto particleList = pG->generateParticles();
-		_particle_force_registry->addParticleListRegistry(particleList, _force_generators); 
+		_particle_force_registry->addParticleListRegistrySingleGen(particleList, _gravityGen);
 		auto it = _entities.begin();
 		_entities.splice(it, particleList);
 	}
-	/*for (ParticleGenerator* sG : _solidRigid_generators) {
+	for (ParticleGenerator* sG : _solidRigid_generators) {
 		sG->auxTime += t;
 		if (sG->auxTime >= sG->generationTime) {
 			auto solidRigidList = sG->generateSolidRigids();
-			_particle_force_registry->addParticleListRegistry(solidRigidList, _force_generators); 
+			_particle_force_registry->addParticleListRegistrySingleGen(solidRigidList, _gravityGen);
 			for (Entity* s : solidRigidList) {
 				sG->auxTime = 0;
 			}
 			auto it = _entities.begin();
 			_entities.splice(it, solidRigidList);
 		}
-	}*/
+	}
 }
 
 void ParticleSystem::shoot(Vector3 dir, Vector3 pos) {
-	auto it = _gun->shoot(dir, pos);
-	_particle_force_registry->addSingleParticleListRegistry(it, _force_generators);
-	_entities.push_back(it);
+	auto balas = _gun->shoot(dir, pos);
+	_particle_force_registry->addParticleListRegistrySingleGen(balas, _gravityGen);
+	auto it = _balas.begin();
+	_balas.splice(it, balas);
+
+	//std::cout << "BALAS SIZE: " << _balas.size() << std::endl;
+}
+
+void ParticleSystem::changeWeapon() {
+	if (_gun->getActiveWeapon() == RIFLE) {
+		rifleP1->getRenderItem()->color = blanco;
+		rifleP2->getRenderItem()->color = blanco;
+		shotgunP1->getRenderItem()->color = rojo;
+		shotgunP2->getRenderItem()->color = rojo;
+	}
+	else {
+		rifleP1->getRenderItem()->color = rojo;
+		rifleP2->getRenderItem()->color = rojo;
+		shotgunP1->getRenderItem()->color = blanco;
+		shotgunP2->getRenderItem()->color = blanco;
+	}
+	_gun->changeWeapon();
 }
 
 //void ParticleSystem::generateFirework() {
@@ -97,16 +158,39 @@ void ParticleSystem::shoot(Vector3 dir, Vector3 pos) {
 //	_explosion_generators.push_back(explosionGen);
 //}
 //
-//void ParticleSystem::generateSpring() {	
-//	Particle* p1 = new Particle({ 50, 20, 5 }, { 0, 0, 0 }, 0.998, -1, 1, CUBE, {1, 1, 1}, {255, 255, 0, 1}, false);
-//	_springParticle = new Particle({ 70, 20, 5 }, { 0, 0, 0 }, 0.998, -1, 1, CUBE, {1, 1, 1}, { 255, 0, 0, 1 }, false);
-//	_spring = new SpringForceGenerator(1, 10, _springParticle);
-//	SpringForceGenerator* f2 = new SpringForceGenerator(1, 10, p1);
-//	//_particle_force_registry->addRegistry(_gravityGen, p1); _particle_force_registry->addRegistry(_gravityGen, p2);
-//	_particle_force_registry->addRegistry(_spring, p1); _particle_force_registry->addRegistry(f2, _springParticle);
-//	_force_generators.push_back(_spring); _force_generators.push_back(f2);
-//	_particles.push_back(p1); _particles.push_back(_springParticle);
-//}
+
+void ParticleSystem::generateUISprings() {
+	SolidRigid* fondoUI = new SolidRigid(_scene, _physics, { -2.20, -1.2, -2.5 }, CUBE, { 0.3, 0.1, 0.001 }, { 255, 255, 255, 1 });
+	_UI.push_back(fondoUI);
+
+	rifleP1 = new Particle({ -0.98, -0.47, -1 }, { 0, 0, 0 }, 1, -1, 1, SPHERE, {0.01, 0.01, 0.01 }, rojo, false);
+	rifleP2 = new Particle({ -0.85, -0.47, -1 }, { 0, 0, 0 }, 1, -1, 1, SPHERE, { 0.01, 0.01, 0.01 }, rojo, false);
+	SpringForceGenerator* springR1 = new SpringForceGenerator(10, 0.12, rifleP2);
+	SpringForceGenerator* springR2 = new SpringForceGenerator(10, 0.12, rifleP1);
+	_particle_force_registry->addRegistry(springR1, rifleP1); _particle_force_registry->addRegistry(springR2, rifleP2);
+	_force_generators.push_back(springR1); _force_generators.push_back(springR2);
+	_UI.push_back(rifleP1); _UI.push_back(rifleP2);
+
+	shotgunP1 = new Particle({ -0.98, -0.5, -1 }, { 0, 0, 0 }, 1, -1, 1, SPHERE, { 0.01, 0.01, 0.01 }, blanco, false);
+	shotgunP2 = new Particle({ -0.79, -0.5, -1 }, { 0, 0, 0 }, 1, -1, 1, SPHERE, { 0.01, 0.01, 0.01 }, blanco, false);
+	SpringForceGenerator* springS1 = new SpringForceGenerator(10, 0.18, shotgunP2);
+	SpringForceGenerator* springS2 = new SpringForceGenerator(10, 0.18, shotgunP1);
+	_particle_force_registry->addRegistry(springS1, shotgunP1); _particle_force_registry->addRegistry(springS2, shotgunP2);
+	_force_generators.push_back(springS1); _force_generators.push_back(springS2);
+	_UI.push_back(shotgunP1); _UI.push_back(shotgunP2);
+}
+
+void ParticleSystem::setDecoration() {
+	color = std::uniform_real_distribution<float>(0.0, 1.0);
+	colorFrutos = { color(_mt), color(_mt), color(_mt), 1 };
+	_arbustos.push_back(new Arbusto(_scene, _physics, { -45, -20, -50 }, { 15, 7, 5 }, colorFrutos));
+	_arbustos.push_back(new Arbusto(_scene, _physics, { -20, -25, -50 }, { 10, 6, 5 }, colorFrutos));
+	_arbustos.push_back(new Arbusto(_scene, _physics, { 0, -22.5, -50 }, { 10, 6.5, 5 }, colorFrutos));
+	_arbustos.push_back(new Arbusto(_scene, _physics, { 20, -20, -50 }, { 10, 7, 5 }, colorFrutos));
+	_arbustos.push_back(new Arbusto(_scene, _physics, { 45, -22.5, -50 }, { 15, 6.5, 5 }, colorFrutos));
+
+}
+
 //
 //void ParticleSystem::generateElasticBand() {
 //	_elasticBandParticle = new Particle({ 50, 20, -5 }, { 0, 0, 0 }, 0.998, -1, 1, CUBE, {1, 1, 1}, {255, 0, 0, 1}, false);

@@ -161,6 +161,14 @@ void RegisterRenderItem(const RenderItem* _item)
 	gRenderItems.push_back(_item);
 }
 
+void MakeInvisibleRenderItem(RenderItem* _item) {
+	_item->color = Vector4(_item->color.x, _item->color.y, _item->color.z, 0);
+}
+
+void MakeVisibleRenderItem(RenderItem* _item) {
+	_item->color = Vector4(_item->color.x, _item->color.y, _item->color.z, 1);
+}
+
 void DeregisterRenderItem(const RenderItem* _item)
 {
 	auto it = find(gRenderItems.begin(), gRenderItems.end(), _item);

@@ -20,7 +20,7 @@ protected:
 	std::mt19937 _mt{ rd() };
 
 public:
-	double generationTime = 0.1;
+	double generationTime = 1;
 	double auxTime = 0;
 
 	ParticleGenerator(PxScene* scene = nullptr, PxPhysics* physics = nullptr);

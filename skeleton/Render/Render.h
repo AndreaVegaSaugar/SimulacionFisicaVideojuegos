@@ -52,6 +52,9 @@ extern std::string info_text;
 extern int WidthCam;
 extern int HeightCam;
 extern bool renderIntro;
+extern bool renderUI;
+extern int score;
+extern bool rifleSelected;
 
 namespace Snippets
 {
@@ -65,6 +68,7 @@ void finishRender();
 void drawText(const std::string& text, int x, int y);
 
 void renderIntroText();
+void renderUIText();
 }
 
 #define MAX_NUM_ACTOR_SHAPES 128

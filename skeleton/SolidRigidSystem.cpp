@@ -22,7 +22,7 @@ SolidRigidSystem::~SolidRigidSystem() {
 }
 
 void SolidRigidSystem::update(double t) {
-	std::cout << "update" << std::endl;
+	//std::cout << "update" << std::endl;
 	_solidRigid_force_registry->updateForces(t);
 	for (auto it = _explosion_solidRigid_generators.begin(); it != _explosion_solidRigid_generators.end();) {
 		if (!(*it)->updateTime(t)) {

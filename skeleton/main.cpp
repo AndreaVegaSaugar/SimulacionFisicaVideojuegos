@@ -43,18 +43,24 @@ bool canShoot = true;
 float shootingTime = 0.2f;
 float auxShootTime = 0.0f;
 bool renderIntro = false;
+bool renderUI = false;
+bool rifleSelected = true;
+int score = 0;
 
 void intro() {
 	renderIntro = true;
 }
 
 void startGame() {
-	PxRigidStatic* Suelo = gPhysics->createRigidStatic(PxTransform({ 0, 0, 0 }));
+	renderIntro = false;
+	renderUI = true;
+	particleSystem->startGame();
+	/*PxRigidStatic* Suelo = gPhysics->createRigidStatic(PxTransform({ 0, 0, 0 }));
 	PxShape* shape = CreateShape(PxBoxGeometry(100, 0.1, 100));
 	Suelo->attachShape(*shape);
 	gScene->addActor(*Suelo);
 	RenderItem* item;
-	item = new RenderItem(shape, Suelo, { 0.8, 0.8, 0.8, 1 });
+	item = new RenderItem(shape, Suelo, { 0.8, 0.8, 0.8, 1 });*/
 }
 
 // Initialize physics engine
@@ -141,6 +147,8 @@ void mouseInput(int button, int state, int x, int y)
 	if (canShoot && button == 0) {
 		particleSystem->shoot({ (GetCamera()->getMousePos().x / 5), (GetCamera()->getMousePos().y / 5), -1 }, { 0,0,0 });
 		canShoot = false;
+		if (renderIntro) startGame();
+		if (renderUI) score++;
 	}
 	PX_UNUSED(state);
 	PX_UNUSED(button);
@@ -153,6 +161,12 @@ void keyPress(unsigned char key, const PxTransform& camera)
 
 	switch(toupper(key))
 	{
+	case 9:
+	{
+		particleSystem->changeWeapon();
+		rifleSelected = !rifleSelected;
+		break;
+	}
 	//case 'B': break;
 	//case ' ':	break;
 	//case ' ':

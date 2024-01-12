@@ -36,6 +36,7 @@
     <ClCompile Include="WhirlwindSolidRigidGenerator.cpp" />
     <ClCompile Include="SolidRigidDragGenerator.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Arbusto.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -77,6 +78,7 @@
     <ClInclude Include="WhirlwindSolidRigidGenerator.h" />
     <ClInclude Include="SolidRigidDragGenerator.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Arbusto.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

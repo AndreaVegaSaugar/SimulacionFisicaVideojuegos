@@ -62,6 +62,14 @@ public:
 	Vector4 color;
 
 	unsigned references;
+
+	void MakeInvisibleRenderItem() {
+		color = Vector4(color.x, color.y, color.z, 0);
+	}
+
+	void MakeVisibleRenderItem() {
+		color = Vector4(color.x, color.y, color.z, 1);
+	}
 };
 
 double GetLastTime();

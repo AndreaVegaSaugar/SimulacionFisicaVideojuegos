@@ -1,22 +1,25 @@
 #include "Gun.h"
 
 Gun::~Gun() {
-	delete weapon;
+	//delete(weapon);
 }
 
-Entity* Gun::shoot(Vector3 dir, Vector3 pos) {
-	Entity* bala;
+std::list<Entity*> Gun::shoot(Vector3 dir, Vector3 pos) {
+	std::list<Entity*> balas;
 	isTurningUp = true;
 	weapon->_rD->setAngularVelocity({ 1, 0, 0 });
-	//std::cout << x << " " << y << std::endl;
 
 	if (type == RIFLE) {
-		bala = new Particle({0 ,0 ,0}, dir * 200, 0.998f, 10, 1.0f, SPHERE, {0.2f, 0.2f, 0.2f}, {10, 0, 0, 1}, false);
+		balas.push_back(new Particle(pos, dir * 300, 0.998f, 10, 1.0f, SPHERE, {0.2f, 0.2f, 0.2f}, {10, 0, 0, 1}, false));
 	}
 	else if (type == SHOTGUN) {
-		
+		for (int i = 0; i < balasShotgun; ++i) {
+			auxDir = dir;
+			auxDir.x += (deviation(_mt) * ((rand() % 3) - 1) ); auxDir.y += (deviation(_mt) * ((rand() % 3) - 1));
+			balas.push_back(new Particle(pos, auxDir * 300, 0.998f, 10, 0.5f, SPHERE, { 0.1f, 0.1f, 0.1f }, { 10, 0, 0, 1 }, false));
+		}
 	}
-	return bala;
+	return balas;
 }
 
 void Gun::integrate(double t) {

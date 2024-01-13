@@ -20,8 +20,10 @@ protected:
 	std::mt19937 _mt{ rd() };
 
 public:
-	double generationTime = 1;
-	double auxTime = 0;
+	double generationTimeS = 0.7;
+	double generationTimeP = 2.0;
+	double auxTimeS = 0;
+	double auxTimeP = 0;
 
 	ParticleGenerator(PxScene* scene = nullptr, PxPhysics* physics = nullptr);
 	string getName() { return _name; }

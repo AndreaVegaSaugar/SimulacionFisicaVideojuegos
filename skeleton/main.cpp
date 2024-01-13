@@ -42,25 +42,23 @@ ParticleSystem* particleSystem = nullptr;
 bool canShoot = true;
 float shootingTime = 0.2f;
 float auxShootTime = 0.0f;
-bool renderIntro = false;
+bool renderIntro = true;
 bool renderUI = false;
+bool renderRetry = false;
 bool rifleSelected = true;
 int score = 0;
+gameState _state = INTRO;
 
 void intro() {
 	renderIntro = true;
+	_state = INTRO;
 }
 
 void startGame() {
+	renderRetry = false;
 	renderIntro = false;
 	renderUI = true;
 	particleSystem->startGame();
-	/*PxRigidStatic* Suelo = gPhysics->createRigidStatic(PxTransform({ 0, 0, 0 }));
-	PxShape* shape = CreateShape(PxBoxGeometry(100, 0.1, 100));
-	Suelo->attachShape(*shape);
-	gScene->addActor(*Suelo);
-	RenderItem* item;
-	item = new RenderItem(shape, Suelo, { 0.8, 0.8, 0.8, 1 });*/
 }
 
 // Initialize physics engine
@@ -88,8 +86,8 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 
 	particleSystem = new ParticleSystem(gScene, gPhysics);
+
 	intro();
-	//createGameSystems();
 }
 
 
@@ -116,6 +114,12 @@ void stepPhysics(bool interactive, double t)
 	}
 
 	particleSystem->update(t);
+	_state = particleSystem->getGameState();
+	if (_state == RETRY) {
+		renderUI = false;
+		renderRetry = true;
+	}
+	score = particleSystem->getScore();
 }
 
 // Function to clean data
@@ -126,6 +130,8 @@ void cleanupPhysics(bool interactive)
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	//delete particle;
+	delete particleSystem;
+
 	gScene->release();
 	gDispatcher->release();
 	// -----------------------------------------------------
@@ -139,16 +145,16 @@ void cleanupPhysics(bool interactive)
 	//delete solidRigidSystem;
 
 	//delete gun;
-	delete particleSystem;
 }
 
 void mouseInput(int button, int state, int x, int y)
 {
 	if (canShoot && button == 0) {
+		
 		particleSystem->shoot({ (GetCamera()->getMousePos().x / 5), (GetCamera()->getMousePos().y / 5), -1 }, { 0,0,0 });
 		canShoot = false;
-		if (renderIntro) startGame();
-		if (renderUI) score++;
+		if (_state == INTRO) startGame();
+		else if (_state == RETRY) startGame();
 	}
 	PX_UNUSED(state);
 	PX_UNUSED(button);

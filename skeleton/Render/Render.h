@@ -53,6 +53,7 @@ extern int WidthCam;
 extern int HeightCam;
 extern bool renderIntro;
 extern bool renderUI;
+extern bool renderRetry;
 extern int score;
 extern bool rifleSelected;
 
@@ -69,6 +70,7 @@ void drawText(const std::string& text, int x, int y);
 
 void renderIntroText();
 void renderUIText();
+void renderRetryText();
 }
 
 #define MAX_NUM_ACTOR_SHAPES 128

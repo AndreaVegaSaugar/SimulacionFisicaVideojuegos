@@ -15,14 +15,19 @@
 
 using namespace std;
 
+enum gameState { INTRO = 0, PLAY = 1, RETRY = 2 };
+
 class ParticleSystem
 {
 protected:
+
+	gameState _state = INTRO;
 	PxScene* _scene;
 	PxPhysics* _physics;
 	list<Entity*> _UI;
 	list<Entity*> _entities;
 	list<Entity*> _balas;
+	list<Entity*> _fireworks;
 	list<ParticleGenerator*> _particle_generators;
 	list<ParticleGenerator*> _solidRigid_generators;
 	FireworkGenerator* _firework_generator = nullptr;
@@ -36,6 +41,8 @@ protected:
 	ElasticBandGenerator* _elasticBand;
 	AnchoredSpring* _anchoredSpring;
 	ParticleGenerator* _elfGenerator;
+	ParticleGenerator* _cloudGenerator;
+	ParticleDragGenerator* _windGen;
 	//BuoyancyForceGenerator* _buoyancy;
 
 	Particle* rifleP1;
@@ -50,6 +57,16 @@ protected:
 	std::random_device rd{};
 	std::mt19937 _mt{ rd() };
 	vector<Arbusto*> _arbustos;
+
+	int lives = 3;
+	Particle* livesP1;
+	Particle* livesP2;
+	Particle* livesP3;
+
+	SolidRigid* fondoUIIntro = nullptr;
+	SolidRigid* fondoUIRetry = nullptr;
+
+	int score = 0;
 
 	bool isInZone(Entity* p) {
 		return ((p->_pose.p.x < _zone.x_Max) && (p->_pose.p.x > _zone.x_Min) &&
@@ -67,14 +84,28 @@ public:
 	ParticleGenerator* getParticleGenerator(const string& name); 
 	FireworkGenerator* getFireworkGenerator() { return _firework_generator; };
 	void changeWeapon();
+	void generateUI();
 	void generateUISprings();
+	void generateUILives();
 	void setDecoration();
 	void checkCollisions(Entity* e);
+	void loseLife();
+	void eraseScene();
+	void cleanScene();
+	int getScore() { return score; };
+	gameState getGameState() { return _state; };
+	void deleteGenerators();
+	void deleteForceGenerators();
+	void deleteBullets();
+	void deleteDecorations();
+	void deleteUI();
+	void deleteEntities();
+	void deleteFireworks();
 
 
-	//void generateFirework();
+	void generateFirework(Vector3 pos);
 	//void generateExplosion();
-	//void generateWind();
+	void generateWind();
 	//void generateTornado();
 
 	//void generateElasticBand();

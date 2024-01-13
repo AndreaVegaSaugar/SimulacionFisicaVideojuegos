@@ -16,12 +16,21 @@ SolidRigid::SolidRigid(physx::PxScene* scene, physx::PxPhysics* physics, Vector3
 	_rD->setLinearVelocity(_vel);
 	_rD->setAngularVelocity({ 0, 0, 0 });
 
+	float volume;
 	PxShape* auxShape;
-	if (shape == SPHERE) auxShape = CreateShape(PxSphereGeometry(_size.x));
-	else auxShape = CreateShape(PxBoxGeometry(_size));
+	if (shape == SPHERE) {
+		auxShape = CreateShape(PxSphereGeometry(_size.x));
+		volume = 4 / 3 * 3.1415 * pow(_size.x, 3);
+	}
+	else {
+		auxShape = CreateShape(PxBoxGeometry(_size));
+		volume = _size.x * _size.y * _size.z;
+	}
 
 	_rD->attachShape(*auxShape);
-	PxRigidBodyExt::updateMassAndInertia(*_rD, _mass);
+	float density = _mass / volume;
+
+	PxRigidBodyExt::updateMassAndInertia(*_rD, density);
 
 	if (!_isModel) {
 		renderItem = new RenderItem(auxShape, _rD, _color);
@@ -54,8 +63,14 @@ SolidRigid::SolidRigid(physx::PxScene* scene, physx::PxPhysics* physics, Vector3
 
 SolidRigid::~SolidRigid() {
 	if (renderItem != nullptr) DeregisterRenderItem(renderItem);
-	if (_rS != nullptr) _rS->release();
-	if (_rD != nullptr) _rD->release();
+	if (_rS != nullptr) { 
+		_scene->removeActor(*_rS);
+		_rS->release();
+	}
+	if (_rD != nullptr) { 
+		_scene->removeActor(*_rD);
+		_rD->release(); 
+	}
 }
 
 void SolidRigid::integrate(double t) {

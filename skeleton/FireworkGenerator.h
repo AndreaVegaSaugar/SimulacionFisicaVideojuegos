@@ -3,8 +3,6 @@
 #include<stdlib.h>
 #include <time.h>
 
-static const Vector3 _gravity = { 0, -10.0, 0 };
-
 class FireworkGenerator
 {
 protected:
@@ -12,10 +10,8 @@ protected:
 
 public:
 	std::vector<Firework*> _firework_pool;
-	Vector4 color;
-
 	FireworkGenerator();
 	~FireworkGenerator();
-	Entity* shoot();
+	Entity* shoot(Vector3 pos);
 };
 

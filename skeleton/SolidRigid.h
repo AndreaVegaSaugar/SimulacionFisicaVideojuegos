@@ -21,7 +21,9 @@ public:
 	}
 
 	inline void addForce(Vector3 f) {
-		if(_rD != nullptr && alive)_rD->addForce(f);	
+		if (_rD != nullptr && alive) {
+			_rD->addForce(f);
+		}
 	}
 };
 

@@ -1,7 +1,7 @@
 #include "Gun.h"
 
 Gun::~Gun() {
-	//delete(weapon);
+	delete(weapon);
 }
 
 std::list<Entity*> Gun::shoot(Vector3 dir, Vector3 pos) {

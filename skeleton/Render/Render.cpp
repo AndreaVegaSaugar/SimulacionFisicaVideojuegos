@@ -285,8 +285,8 @@ void setupDefaultRenderState()
 }
 
 void renderIntroText() {
-	glColor4f(0.0f, 8.0f, 0.0f, 1.0f);
-	drawText("Welcome to Elf Hunt!, ", 220, 350);
+	glColor4f(0.0f, 5.0f, 0.0f, 1.0f);
+	drawText("Welcome to ELF HUNT! ", 215, 360);
 	glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
 	drawText("As a farmer, you have put a lot of effort into growing your veggies", 160, 335);
 	drawText("so you have to do everything in your hands to defend them. Sadly, ", 160, 320);
@@ -294,12 +294,14 @@ void renderIntroText() {
 	drawText("them on sight! However be very careful: if more than 3 elves escape", 160, 290);
 	drawText("you will lose your harvest, and sometimes when shot they will", 160, 275);
 	drawText("release a burst of magic energy with unexpected consequences...", 160, 260);
-	glColor4f(7.0f, 0.0f, 0.0f, 1.0f);
+	drawText("(click to shoot and TAB to switch weapons)", 190, 220);
+	glColor4f(5.0f, 0.0f, 0.0f, 1.0f);
 	drawText("CLICK TO START", 230, 130);
 }
 void renderUIText() {
 	glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
 	drawText("Score: " + std::to_string(score), 10, 490);
+	drawText("Lives: ", 440, 490);
 
 	if(rifleSelected) glColor4f(7.0f, 0.0f, 0.0f, 1.0f);
 	else glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
@@ -310,15 +312,28 @@ void renderUIText() {
 	drawText("SHOTGUN", 20, 30);
 }
 
+void renderRetryText() {
+	glColor4f(5.0f, 5.0f, 5.0f, 1.0f);
+	drawText("WOW! You got a score of ", 190, 315);
+	glColor4f(5.0f, 5.0f, 0.0f, 1.0f);
+	drawText(std::to_string(score), 270, 315);
+	glColor4f(5.0f, 5.0f, 5.0f, 1.0f);
+	drawText("But I am sure you can do even better than that", 190, 300);
+	drawText("Try again and teach those pesky elfs a lesson!", 190, 285);
+	glColor4f(7.0f, 0.0f, 0.0f, 1.0f);
+	drawText("CLICK TO RETRY", 230, 130);
+}
+
 void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, PxReal clipNear, PxReal clipFar)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Display text
-	glColor4f(1.0f, 0.2f, 0.2f, 1.0f);
+	glColor4f(5.0f, 5.0f, 5.0f, 1.0f);
 	drawText(display_text, 5, 5);
 	if (renderIntro) renderIntroText();
 	if (renderUI) renderUIText();
+	if (renderRetry) renderRetryText();
 
 	// Setup camera
 	glMatrixMode(GL_PROJECTION);

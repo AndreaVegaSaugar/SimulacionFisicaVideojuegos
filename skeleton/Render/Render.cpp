@@ -292,8 +292,8 @@ void renderIntroText() {
 	drawText("so you have to do everything in your hands to defend them. Sadly, ", 160, 320);
 	drawText("scarecrows dont work on elves and they love to steal food, so shoot", 160, 305);
 	drawText("them on sight! However be very careful: if more than 3 elves escape", 160, 290);
-	drawText("you will lose your harvest, and sometimes when shot they will", 160, 275);
-	drawText("release a burst of magic energy with unexpected consequences...", 160, 260);
+	drawText("you will lose your harvest, and sometimes they will try to confuse", 160, 275);
+	drawText("you by throwing one of your veggies charged with magic properties... ", 160, 260);
 	drawText("(click to shoot and TAB to switch weapons)", 190, 220);
 	glColor4f(5.0f, 0.0f, 0.0f, 1.0f);
 	drawText("CLICK TO START", 230, 130);

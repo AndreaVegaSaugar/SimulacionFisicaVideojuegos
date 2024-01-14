@@ -47,6 +47,10 @@ bool renderUI = false;
 bool renderRetry = false;
 bool rifleSelected = true;
 int score = 0;
+float countdown = 2.0f;
+float auxClickTime = 0.0f;
+bool justChangedState = false;
+bool hasWaited = false;
 gameState _state = INTRO;
 
 void intro() {
@@ -101,25 +105,38 @@ void stepPhysics(bool interactive, double t)
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 
-	//solidRigidSystem->update(t);
-
-	//particle->integrate(t);
-	//gun->integrate(t);
-	if (canShoot == false) {
-		auxShootTime += t;
-		if (auxShootTime >= shootingTime) {
-			auxShootTime = 0;
-			canShoot = true;
-		}
-	}
-
 	particleSystem->update(t);
+	score = particleSystem->getScore();
 	_state = particleSystem->getGameState();
-	if (_state == RETRY) {
+	if (!hasWaited && _state == INTRO) {
+		justChangedState = true;
+	}
+	if (!hasWaited && _state == RETRY) {
 		renderUI = false;
 		renderRetry = true;
+		justChangedState = true;
 	}
-	score = particleSystem->getScore();
+	if (_state == PLAY) hasWaited = false;
+
+	if (!justChangedState) {
+		if (!canShoot) {
+			auxShootTime += t;
+			if (auxShootTime >= shootingTime) {
+				auxShootTime = 0;
+				canShoot = true;
+			}
+		}
+	}
+	else if (justChangedState) {
+		canShoot = false;
+		auxClickTime += t;
+		if (auxClickTime >= countdown) {
+			auxClickTime = 0;
+			canShoot = true;
+			justChangedState = false;
+			hasWaited = true;
+		}
+	}
 }
 
 // Function to clean data
@@ -169,8 +186,10 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 	case 9:
 	{
-		particleSystem->changeWeapon();
-		rifleSelected = !rifleSelected;
+		if (_state == PLAY) {
+			particleSystem->changeWeapon();
+			rifleSelected = !rifleSelected;
+		}
 		break;
 	}
 	//case 'B': break;

@@ -104,7 +104,7 @@ public:
 
 
 	void generateFirework(Vector3 pos);
-	//void generateExplosion();
+	void generateExplosion(Vector3 pos);
 	void generateWind();
 	//void generateTornado();
 

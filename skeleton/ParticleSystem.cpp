@@ -39,7 +39,7 @@ void ParticleSystem::startGame() {
 	score = 0;
 	generateUI();
 	setDecoration();
-	_elfGenerator = new UniformParticleGenerator(_scene, _physics, "elfGenerator", Vector3(40, -20, -60), Vector3(-40, -20, -60), Vector3(10, 30, 0), Vector3(-10, 15, 0), 1);
+	_elfGenerator = new UniformParticleGenerator(_scene, _physics, "elfGenerator", Vector3(40, -20, -60), Vector3(-40, -20, -60), Vector3(10, 30, 0), Vector3(-10, 15, 0), 1, colorFrutos);
 	_solidRigid_generators.push_back(_elfGenerator);
 	_cloudGenerator = new GaussianParticleGenerator("cloudGenerator", Vector3(3, 5, 3), Vector3(0.01, 0.01, 0.01), Vector3(100, 40, -80), Vector3(0.01, 0.01, 0.01), 1);
 	_particle_generators.push_back(_cloudGenerator);
@@ -50,8 +50,10 @@ void ParticleSystem::checkCollisions(Entity* bala) {
 		if (bala->isAlive() && (*ot)->isAlive() && (*ot)->checkCollision(bala)) {
 			(*ot)->alive = false;
 			bala->alive = false;
-			score++;
 			generateFirework((*ot)->_pose.p);
+
+			if ((*ot)->_shape == SPHERE) score++;
+			else generateExplosion((*ot)->_pose.p);
 		}
 	}
 }
@@ -103,7 +105,14 @@ void ParticleSystem::cleanScene() {
 void ParticleSystem::update(double t) {
 	_gun->integrate(t);
 	_particle_force_registry->updateForces(t);
-
+	for (auto it = _explosion_generators.begin(); it != _explosion_generators.end();) {
+		if (!(*it)->updateTime(t)) {
+			_particle_force_registry->deleteGeneratorRegistry(*it);
+			delete (*it);
+			it = _explosion_generators.erase(it);
+		}
+		else ++it;
+	}
 	for (auto it = _entities.begin(); it != _entities.end();) {
 		bool zona = isInZone(*it);
 		if ((*it)->isAlive() && zona) {
@@ -111,13 +120,14 @@ void ParticleSystem::update(double t) {
 			++it;
 		}
 		else {
+			Shape shape = (*it)->_shape;
 			_particle_force_registry->deleteParticleRegistry((*it));
 			auto ot = (*it)->onDeath();
 			auto ut = _entities.end();
 			_entities.splice(ut, ot);
 			delete (*it);
 			it = _entities.erase(it);
-			if (!zona) { loseLife(); return; }
+			if (!zona && shape == SPHERE) { loseLife(); return; }
 		}
 	}
 	for (auto it = _balas.begin(); it != _balas.end();) {
@@ -216,19 +226,14 @@ void ParticleSystem::generateWind() {
 	_windGen = new ParticleDragGenerator(2, 0, Vector3(-20, 0, 0));
 	_force_generators.push_back(_windGen);
 }
-//
-//void ParticleSystem::generateTornado() {
-//	auto whirlGen = new WhirlwindGenerator(1, 2, 0, Vector3(0, 20, 0));
-//	_force_generators.push_back(whirlGen);
-//}
-//
-//void ParticleSystem::generateExplosion() {
-//	std::list<ForceGenerator*> aux;
-//	auto explosionGen = new ExplosionGenerator(Vector3(0, 20, 0), 5, 10000, 500, 20);
-//	_particle_force_registry->addParticleListRegistrySingleGen(_particles, explosionGen);
-//	_explosion_generators.push_back(explosionGen);
-//}
-//
+
+void ParticleSystem::generateExplosion(Vector3 pos) {
+	std::list<ForceGenerator*> aux;
+	auto explosionGen = new ExplosionGenerator(pos, 1, 9000, 300, 20);
+	_particle_force_registry->addParticleListRegistrySingleGen(_entities, explosionGen);
+	_explosion_generators.push_back(explosionGen);
+}
+
 
 void ParticleSystem::generateUI() {
 	SolidRigid* fondoUILives = new SolidRigid(_scene, _physics, { 2.22, 1.4, -2.5 }, CUBE, { 0.45, 0.2, 0.001 }, { 255, 255, 255, 1 });

@@ -1,7 +1,7 @@
 #include "ParticleSystem.h"
 
 ParticleSystem::ParticleSystem(PxScene* scene, PxPhysics* physics) {
-	_zone.x_Max = 200; _zone.x_Min = -200; _zone.y_Max = 200; _zone.y_Min = -50; _zone.z_Max = 200; _zone.z_Min = -200;
+	_zone.x_Max = 150; _zone.x_Min = -150; _zone.y_Max = 150; _zone.y_Min = -50; _zone.z_Max = 150; _zone.z_Min = -150;
 	_scene = scene; _physics = physics;
 	_state = INTRO;
 
@@ -41,7 +41,7 @@ void ParticleSystem::startGame() {
 	setDecoration();
 	_elfGenerator = new UniformParticleGenerator(_scene, _physics, "elfGenerator", Vector3(40, -20, -60), Vector3(-40, -20, -60), Vector3(10, 30, 0), Vector3(-10, 15, 0), 1);
 	_solidRigid_generators.push_back(_elfGenerator);
-	_cloudGenerator = new GaussianParticleGenerator("cloudGenerator", Vector3(0.01, 10, 10), Vector3(0.01, 0.01, 0.01), Vector3(70, 40, -60), Vector3(0.01, 0.01, 0.01), 1);
+	_cloudGenerator = new GaussianParticleGenerator("cloudGenerator", Vector3(3, 5, 3), Vector3(0.01, 0.01, 0.01), Vector3(100, 40, -80), Vector3(0.01, 0.01, 0.01), 1);
 	_particle_generators.push_back(_cloudGenerator);
 }
 
@@ -84,6 +84,7 @@ void ParticleSystem::eraseScene() {
 
 	_gravityGen = new GravityForceGenerator(Vector3(0, -10, 0));
 	_force_generators.push_back(_gravityGen);
+	generateWind();
 
 	fondoUIRetry = new SolidRigid(_scene, _physics, { 0.0, 0.25, -2.5 }, CUBE, { 0.8, 0.4, 0.001 }, { 0, 0, 0, 1 });
 	_UI.push_back(fondoUIRetry);
@@ -157,7 +158,7 @@ void ParticleSystem::update(double t) {
 	}
 	for (ParticleGenerator* pG : _particle_generators) {
 		pG->auxTimeP += t;
-		if (pG->auxTimeS >= pG->generationTimeP) {
+		if (pG->auxTimeP >= pG->generationTimeP) {
 			auto particleList = pG->generateParticles();
 			_particle_force_registry->addParticleListRegistrySingleGen(particleList, _windGen);
 			for (Entity* s : particleList) {
@@ -284,8 +285,8 @@ void ParticleSystem::setDecoration() {
 	_arbustos.push_back(new Arbusto(_scene, _physics, { 45, -20, -50 }, { 15, 7, 5 }, colorFrutos));
 
 	//experimento
-	_arbustos.push_back(new Arbusto(_scene, _physics, { -64, -50, -60 }, { 1, 100, 1 }, colorFrutos));
-	_arbustos.push_back(new Arbusto(_scene, _physics, { 64, -50, -60 }, { 1, 100, 1 }, colorFrutos));
+	_arbustos.push_back(new Arbusto(_scene, _physics, { -64, 0, -60 }, { 1, 100, 1 }, colorFrutos));
+	_arbustos.push_back(new Arbusto(_scene, _physics, { 64, 0, -60 }, { 1, 100, 1 }, colorFrutos));
 }
 
 void ParticleSystem::deleteGenerators() {

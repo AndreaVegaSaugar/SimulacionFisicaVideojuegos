@@ -21,7 +21,7 @@ protected:
 
 public:
 	double generationTimeS = 0.7;
-	double generationTimeP = 2.0;
+	double generationTimeP = 2.5;
 	double auxTimeS = 0;
 	double auxTimeP = 0;
 

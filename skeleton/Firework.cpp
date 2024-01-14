@@ -11,7 +11,7 @@ std::list<Entity*> Firework::explode() {
 		f->_vel = { float(rand() % 31) - 15, float(rand() % 31) - 15, float(rand() % 31) - 15 };
 		f->_color = { float(rand() % 256 / 255.0f), float(rand() % 256 / 255.0f), float(rand() % 256 / 255.0f), 1 };
 		
-		ParticleGenerator* gP = new GaussianParticleGenerator("aux", Vector3(0.01, 0.01, 0.01), Vector3(9, 9, 9), _pose.p, f->_vel, _n_hijos);
+		ParticleGenerator* gP = new GaussianParticleGenerator("firework", Vector3(0.01, 0.01, 0.01), Vector3(9, 9, 9), _pose.p, f->_vel, _n_hijos);
 		gP->setParticle(f);
 		list = gP->generateParticles();
 		delete gP;

@@ -8,6 +8,13 @@ GaussianParticleGenerator::~GaussianParticleGenerator() {
 list<Entity*> GaussianParticleGenerator::generateParticles() {
 	list<Entity*> particles;
 	for (int i = 0; i < _n_particles; ++i) {
+		if (_name != "firework")
+		{
+			_modelP->_size.x = sizeX(_mt);
+			_modelP->_size.y = sizeY(_mt);
+			_modelP->_mass = mass(_mt);
+			_modelP->_shape = CUBE;
+		}
 		Particle* p = _modelP->clone();
 		p->_pose.p.x = (*pos_x)(_mt);
 		p->_pose.p.y = (*pos_y)(_mt);
@@ -16,6 +23,7 @@ list<Entity*> GaussianParticleGenerator::generateParticles() {
 		p->_vel.x = (*vel_x)(_mt);
 		p->_vel.y = (*vel_y)(_mt);
 		p->_vel.z = (*vel_z)(_mt);
+
 
 		particles.push_back(p);
 	}

@@ -6,9 +6,7 @@ SpringForceGenerator::SpringForceGenerator(double k, double resting_length, Enti
 	_other = other;
 }
 
-SpringForceGenerator::~SpringForceGenerator() {
-
-}
+SpringForceGenerator::~SpringForceGenerator() {};
 
 void SpringForceGenerator::updateForce(Entity* particle, double t) {
 	Vector3 relative_pos_vector = _other->_pose.p - particle->_pose.p;

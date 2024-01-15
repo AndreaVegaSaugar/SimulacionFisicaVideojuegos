@@ -20,6 +20,7 @@ protected:
 	std::mt19937 _mt{ rd() };
 
 public:
+	// tiempo de generacion de particulas y de solidos rigidos
 	double generationTimeS = 0.7;
 	double generationTimeP = 2.5;
 	double auxTimeS = 0;

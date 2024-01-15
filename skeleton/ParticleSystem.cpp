@@ -10,8 +10,7 @@ ParticleSystem::ParticleSystem(PxScene* scene, PxPhysics* physics) {
 
 	_particle_force_registry = new ParticleForceRegistry();
 
-	_gravityGen = new GravityForceGenerator(Vector3(0, -10, 0));
-	_force_generators.push_back(_gravityGen);
+	generateGravity();
 	generateWind();
 	_firework_generator = new FireworkGenerator();
 
@@ -31,6 +30,7 @@ ParticleSystem::~ParticleSystem() {
 	if (_firework_generator != nullptr) delete _firework_generator;
 }
 
+// establece el estao inicial del juego
 void ParticleSystem::startGame() {
 	deleteFireworks();
 	deleteUI();
@@ -39,12 +39,14 @@ void ParticleSystem::startGame() {
 	score = 0;
 	generateUI();
 	setDecoration();
+	generateWind();
 	_elfGenerator = new UniformParticleGenerator(_scene, _physics, "elfGenerator", Vector3(40, -20, -60), Vector3(-40, -20, -60), Vector3(10, 30, 0), Vector3(-10, 15, 0), 1, colorFrutos);
 	_solidRigid_generators.push_back(_elfGenerator);
 	_cloudGenerator = new GaussianParticleGenerator("cloudGenerator", Vector3(3, 5, 3), Vector3(0.01, 0.01, 0.01), Vector3(100, 40, -80), Vector3(0.01, 0.01, 0.01), 1);
 	_particle_generators.push_back(_cloudGenerator);
 }
 
+// comprueba las colisiones entre las balas y los elfos
 void ParticleSystem::checkCollisions(Entity* bala) {
 	for (auto ot = _entities.begin(); ot != _entities.end(); ++ot) {
 		if (bala->isAlive() && (*ot)->isAlive() && (*ot)->checkCollision(bala)) {
@@ -58,6 +60,7 @@ void ParticleSystem::checkCollisions(Entity* bala) {
 	}
 }
 
+// maneja la perdida de vidas
 void ParticleSystem::loseLife() {
 	lives--;
 	if (lives == 2) { 
@@ -73,6 +76,7 @@ void ParticleSystem::loseLife() {
 	}
 }
 
+// borra todo lo relacionado con el gameplay para crear la escena de retry
 void ParticleSystem::eraseScene() {
 	_state = RETRY;
 
@@ -84,9 +88,7 @@ void ParticleSystem::eraseScene() {
 	deleteBullets();
 	deleteFireworks();
 
-	_gravityGen = new GravityForceGenerator(Vector3(0, -10, 0));
-	_force_generators.push_back(_gravityGen);
-	generateWind();
+	generateGravity();
 
 	fondoUIRetry = new SolidRigid(_scene, _physics, { 0.0, 0.25, -2.5 }, CUBE, { 0.8, 0.4, 0.001 }, { 0, 0, 0, 1 });
 	_UI.push_back(fondoUIRetry);
@@ -96,12 +98,14 @@ void ParticleSystem::eraseScene() {
 	}
 }
 
+// despeja la escena de balas y elfos cuando se pierde una vida
 void ParticleSystem::cleanScene() {
 	deleteEntities();
 	deleteBullets();
 	deleteFireworks();
 }
 
+// metodo update
 void ParticleSystem::update(double t) {
 	_gun->integrate(t);
 	_particle_force_registry->updateForces(t);
@@ -192,6 +196,7 @@ void ParticleSystem::update(double t) {
 	}
 }
 
+// metodo encargado de llamas al shoot() de gun e incluir la lista de particulas que devuelva en la lista de balas
 void ParticleSystem::shoot(Vector3 dir, Vector3 pos) {
 	auto balas = _gun->shoot(dir, pos);
 	_particle_force_registry->addParticleListRegistrySingleGen(balas, _gravityGen);
@@ -199,6 +204,7 @@ void ParticleSystem::shoot(Vector3 dir, Vector3 pos) {
 	_balas.splice(it, balas);
 }
 
+// metodo que cambia de arma
 void ParticleSystem::changeWeapon() {
 	if (_state == PLAY) {
 		if (_gun->getActiveWeapon() == RIFLE) {
@@ -217,16 +223,22 @@ void ParticleSystem::changeWeapon() {
 	}
 }
 
+//genera la gravedad
+void  ParticleSystem::generateGravity() {
+	_gravityGen = new GravityForceGenerator(Vector3(0, -10, 0));
+	_force_generators.push_back(_gravityGen);
+}
+//genera fuegos artificiales
 void ParticleSystem::generateFirework(Vector3 pos) {
 	Entity* p = _firework_generator->shoot(pos);
 	_fireworks.push_back(p);
 }
-
+//genera el viento para mover las nubes
 void ParticleSystem::generateWind() {
 	_windGen = new ParticleDragGenerator(2, 0, Vector3(-20, 0, 0));
 	_force_generators.push_back(_windGen);
 }
-
+//genera una explosion y se llama al disparar a una fruta
 void ParticleSystem::generateExplosion(Vector3 pos) {
 	std::list<ForceGenerator*> aux;
 	auto explosionGen = new ExplosionGenerator(pos, 1, 9000, 300, 20);
@@ -234,7 +246,7 @@ void ParticleSystem::generateExplosion(Vector3 pos) {
 	_explosion_generators.push_back(explosionGen);
 }
 
-
+//genera todo lo relacionado con UI, fondos para textos, muelles que indican que arma es la elegida, particulas de informan del numero de vidas restante...
 void ParticleSystem::generateUI() {
 	SolidRigid* fondoUILives = new SolidRigid(_scene, _physics, { 2.22, 1.4, -2.5 }, CUBE, { 0.45, 0.2, 0.001 }, { 255, 255, 255, 1 });
 	_UI.push_back(fondoUILives);

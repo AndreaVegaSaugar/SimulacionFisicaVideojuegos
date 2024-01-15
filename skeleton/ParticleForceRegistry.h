@@ -35,11 +35,9 @@ public:
 	}
 
 	void deleteGeneratorRegistry(ForceGenerator* f) {
-		//erase(it);
 		for (auto it = begin(); it != end();) {
 			if (it->first == f) {
 				it = erase(it);
-				//std::cout << "borrado mapa" << std::endl;
 			}
 			else ++it;
 		}

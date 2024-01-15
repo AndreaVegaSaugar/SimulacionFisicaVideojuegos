@@ -3,6 +3,7 @@
 #include <random>
 #include "SolidRigid.h"
 
+//clase que crea un arbusto compuesto por solidos rigidos y posicion aleatoria de los frutos
 class Arbusto
 {
 	SolidRigid* base;

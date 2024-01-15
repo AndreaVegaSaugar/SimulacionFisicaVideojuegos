@@ -8,6 +8,7 @@ GaussianParticleGenerator::~GaussianParticleGenerator() {
 list<Entity*> GaussianParticleGenerator::generateParticles() {
 	list<Entity*> particles;
 	for (int i = 0; i < _n_particles; ++i) {
+		// en caso de las nubes, aplicamos una escala y masa semialatroria dentro de unos margenes y una forma cuadrada
 		if (_name != "firework")
 		{
 			_modelP->_size.x = sizeX(_mt);

@@ -13,6 +13,7 @@ struct Zone {
 	float z_Max, z_Min;
 };
 
+// clase padre de la que heredan Particle y SolidRigid, contiene sus metodos y propiedades comunes
 class Entity
 {
 protected:
@@ -43,13 +44,6 @@ public:
 	virtual ~Entity() {}
 
 	bool checkCollision(Entity* other){
-
-		/*std::cout << _pose.p.x << " " << _pose.p.y << " " << _pose.p.z << std::endl;
-		std::cout << (other->_pose.p.x) << " " << (_pose.p.x - _size.x) << " " << (other->_pose.p.x) << " " << (_pose.p.x + _size.x) << std::endl;
-		std::cout << (other->_pose.p.y) << " " << (_pose.p.y - _size.y) << " " << (other->_pose.p.y) << " " << (_pose.p.y + _size.y) << std::endl;
-		std::cout << (other->_pose.p.z) << " " << (_pose.p.z - _size.z) << " " << (other->_pose.p.z) << " " << (_pose.p.z + _size.z) << std::endl;
-*/
-
 		return ((other->_pose.p.x + other->_size.x) >= (_pose.p.x - _size.x) && (other->_pose.p.x - other->_size.x) <= (_pose.p.x + _size.x) &&
 				(other->_pose.p.y + other->_size.y) >= (_pose.p.y - _size.y) && (other->_pose.p.y - other->_size.y) <= (_pose.p.y + _size.y) &&
 				(other->_pose.p.z + other->_size.z) >= (_pose.p.z - _size.z) && (other->_pose.p.z - other->_size.z) <= (_pose.p.z + _size.z));

@@ -40,93 +40,68 @@ using namespace physx;
 namespace Snippets
 {
 
-Camera::Camera(const PxVec3& eye, const PxVec3& dir)
-{
-	mEye = eye;
-	mDir = dir.getNormalized();
-	mMouseX = 0;
-	mMouseY = 0;
-}
-
-void Camera::handleMouse(int button, int state, int x, int y)
-{
-	PX_UNUSED(state);
-	PX_UNUSED(button);
-	mMouseX = x;
-	mMouseY = y;
-}
-
-physx::PxVec2 Camera::getMousePos() {
-
-	float x = (2.0f * mMouseX) / glutGet(GLUT_WINDOW_WIDTH) - 1.0f;
-	float y = 1.0f - (2.0f * mMouseY) / glutGet(GLUT_WINDOW_HEIGHT);
-	float viewX = x * 5.0f;
-	float viewY = y * 3.0f;
-	return { (float)viewX , (float)viewY };
-}
-
-bool Camera::handleKey(unsigned char key, int x, int y, float speed)
-{
-	PX_UNUSED(x);
-	PX_UNUSED(y);
-
-	PxVec3 viewY = mDir.cross(PxVec3(0,1,0)).getNormalized();
-	switch(toupper(key))
+	Camera::Camera(const PxVec3& eye, const PxVec3& dir)
 	{
-	/*case 'W':	mEye += mDir*2.0f*speed;		break;
-	case 'S':	mEye -= mDir*2.0f*speed;		break;
-	case 'A':	mEye -= viewY*2.0f*speed;		break;
-	case 'D':	mEye += viewY*2.0f*speed;		break;*/
-	default:							return false;
+		mEye = eye;
+		mDir = dir.getNormalized();
+		mMouseX = 0;
+		mMouseY = 0;
 	}
-	return true;
-}
 
-void Camera::handleAnalogMove(float x, float y)
-{
-	/*PxVec3 viewY = mDir.cross(PxVec3(0,1,0)).getNormalized();
-	mEye += mDir*y;
-	mEye += viewY*x;*/
-}
+	void Camera::handleMouse(int button, int state, int x, int y)
+	{
+		PX_UNUSED(state);
+		PX_UNUSED(button);
+		mMouseX = x;
+		mMouseY = y;
+	}
 
-void Camera::handleMotion(int x, int y)
-{
-	/*int dx = mMouseX - x;
-	int dy = mMouseY - y;
+	physx::PxVec2 Camera::getMousePosition() {
 
-	PxVec3 viewY = mDir.cross(PxVec3(0,1,0)).getNormalized();
+		float x = (2.0f * mMouseX) / glutGet(GLUT_WINDOW_WIDTH) - 1.0f;
+		float y = 1.0f - (2.0f * mMouseY) / glutGet(GLUT_WINDOW_HEIGHT);
+		float viewX = x * 5.0f;
+		float viewY = y * 3.0f;
+		return { (float)viewX , (float)viewY };
+	}
 
-	PxQuat qx(PxPi * dx / 180.0f, PxVec3(0,1,0));
-	mDir = qx.rotate(mDir);
-	PxQuat qy(PxPi * dy / 180.0f, viewY);
-	mDir = qy.rotate(mDir);
+	bool Camera::handleKey(unsigned char key, int x, int y, float speed)
+	{
+		PX_UNUSED(x);
+		PX_UNUSED(y);
 
-	mDir.normalize();
+		PxVec3 viewY = mDir.cross(PxVec3(0,1,0)).getNormalized();
+		switch(toupper(key))
+		{
+		default:							return false;
+		}
+		return true;
+	}
 
-	mMouseX = x;
-	mMouseY = y;*/
-}
+	void Camera::handleAnalogMove(float x, float y) {};
 
-PxTransform Camera::getTransform() const
-{
-	PxVec3 viewY = mDir.cross(PxVec3(0,1,0));
+	void Camera::handleMotion(int x, int y) {};
 
-	if(viewY.normalize()<1e-6f) 
-		return PxTransform(mEye);
+	PxTransform Camera::getTransform() const
+	{
+		PxVec3 viewY = mDir.cross(PxVec3(0,1,0));
 
-	PxMat33 m(mDir.cross(viewY), viewY, -mDir);
-	return PxTransform(mEye, PxQuat(m));
-}
+		if(viewY.normalize()<1e-6f) 
+			return PxTransform(mEye);
 
-PxVec3 Camera::getEye() const
-{ 
-	return mEye; 
-}
+		PxMat33 m(mDir.cross(viewY), viewY, -mDir);
+		return PxTransform(mEye, PxQuat(m));
+	}
 
-PxVec3 Camera::getDir() const
-{ 
-	return mDir; 
-}
+	PxVec3 Camera::getEye() const
+	{ 
+		return mEye; 
+	}
+
+	PxVec3 Camera::getDir() const
+	{ 
+		return mDir; 
+	}
 
 
 }

@@ -8,6 +8,7 @@ std::list<Entity*> Firework::explode() {
 	Particle* f;
 	if (_gen < generator.size() - 1) {
 		f = generator[_gen + 1];
+		// le aplicamos una velocidad y color aleatorios al firework
 		f->_vel = { float(rand() % 31) - 15, float(rand() % 31) - 15, float(rand() % 31) - 15 };
 		f->_color = { float(rand() % 256 / 255.0f), float(rand() % 256 / 255.0f), float(rand() % 256 / 255.0f), 1 };
 		

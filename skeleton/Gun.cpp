@@ -4,6 +4,8 @@ Gun::~Gun() {
 	delete(weapon);
 }
 
+// metodo que se encarga de instanciar los proyectiles, en caso de tener equipado el rifle sera solo uno, con mayor masa y escala
+// y en el caso de la escopeta seran cinco, con menor masa y escala ademas de menor precision 
 std::list<Entity*> Gun::shoot(Vector3 dir, Vector3 pos) {
 	std::list<Entity*> balas;
 	isTurningUp = true;

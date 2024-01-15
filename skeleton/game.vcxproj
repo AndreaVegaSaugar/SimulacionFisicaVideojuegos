@@ -254,17 +254,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnchoredSpring.cpp" />
-    <ClCompile Include="Arbusto.cpp" />
     <ClCompile Include="BuoyancyForceGenerator.cpp" />
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="ElasticBandGenerator.cpp" />
-    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="ExplosionGenerator.cpp" />
-    <ClCompile Include="ExplosionSolidRigidGenerator.cpp" />
     <ClCompile Include="Firework.cpp" />
     <ClCompile Include="FireworkGenerator.cpp" />
     <ClCompile Include="GaussianParticleGenerator.cpp" />
-    <ClCompile Include="GaussianSolidRigidGenerator.cpp" />
     <ClCompile Include="GravityForceGenerator.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="main.cpp" />
@@ -273,18 +269,12 @@
     <ClCompile Include="SolidRigid.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
-    <ClCompile Include="Proyectil.cpp" />
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Render.cpp" />
-    <ClCompile Include="SolidRigidDragGenerator.cpp" />
-    <ClCompile Include="SolidRigidGenerator.cpp" />
-    <ClCompile Include="SolidRigidSystem.cpp" />
     <ClCompile Include="SpringForceGenerator.cpp" />
     <ClCompile Include="UniformParticleGenerator.cpp" />
-    <ClCompile Include="UniformSolidRigidGenerator.cpp" />
     <ClCompile Include="WhirlwindGenerator.cpp" />
-    <ClCompile Include="WhirlwindSolidRigidGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnchoredSpring.h" />
@@ -295,12 +285,10 @@
     <ClInclude Include="ElasticBandGenerator.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="ExplosionGenerator.h" />
-    <ClInclude Include="ExplosionSolidRigidGenerator.h" />
     <ClInclude Include="Firework.h" />
     <ClInclude Include="FireworkGenerator.h" />
     <ClInclude Include="ForceGenerator.h" />
     <ClInclude Include="GaussianParticleGenerator.h" />
-    <ClInclude Include="GaussianSolidRigidGenerator.h" />
     <ClInclude Include="GravityForceGenerator.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="Particle.h" />
@@ -309,20 +297,12 @@
     <ClInclude Include="SolidRigid.h" />
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="ParticleSystem.h" />
-    <ClInclude Include="Proyectil.h" />
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
-    <ClInclude Include="SolidRigidDragGenerator.h" />
-    <ClInclude Include="SolidRigidForceGenerator.h" />
-    <ClInclude Include="SolidRigidForceRegistry.h" />
-    <ClInclude Include="SolidRigidGenerator.h" />
-    <ClInclude Include="SolidRigidSystem.h" />
     <ClInclude Include="SpringForceGenerator.h" />
     <ClInclude Include="UniformParticleGenerator.h" />
-    <ClInclude Include="UniformSolidRigidGenerator.h" />
     <ClInclude Include="WhirlwindGenerator.h" />
-    <ClInclude Include="WhirlwindSolidRigidGenerator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

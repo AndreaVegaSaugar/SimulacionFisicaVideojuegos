@@ -10,7 +10,6 @@
 #include "Particle.h"
 #include "Gun.h"
 #include "ParticleSystem.h"
-#include "SolidRigidSystem.h"
 
 #include <iostream>
 
@@ -104,10 +103,12 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-
+	//actualizamos el estado del juego
 	particleSystem->update(t);
 	score = particleSystem->getScore();
 	_state = particleSystem->getGameState();
+
+	//me aseguro que hay 2 segundos de delay al cambiar de estado en los que no se puede disparar para que el jugador no se salte una escena
 	if (!hasWaited && _state == INTRO) {
 		justChangedState = true;
 	}
@@ -117,7 +118,6 @@ void stepPhysics(bool interactive, double t)
 		justChangedState = true;
 	}
 	if (_state == PLAY) hasWaited = false;
-
 	if (!justChangedState) {
 		if (!canShoot) {
 			auxShootTime += t;
@@ -145,8 +145,6 @@ void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
 
-	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
-	//delete particle;
 	delete particleSystem;
 
 	gScene->release();
@@ -158,17 +156,14 @@ void cleanupPhysics(bool interactive)
 	transport->release();
 	
 	gFoundation->release();
-
-	//delete solidRigidSystem;
-
-	//delete gun;
 }
 
+// metodo que recoge el input del raton y hace las llamadas correspondientes
 void mouseInput(int button, int state, int x, int y)
 {
 	if (canShoot && button == 0) {
 		
-		particleSystem->shoot({ (GetCamera()->getMousePos().x / 5), (GetCamera()->getMousePos().y / 5), -1 }, { 0,0,0 });
+		particleSystem->shoot({ (GetCamera()->getMousePosition().x / 5), (GetCamera()->getMousePosition().y / 5), -1 }, { 0,0,0 });
 		canShoot = false;
 		if (_state == INTRO) startGame();
 		else if (_state == RETRY) startGame();
@@ -184,64 +179,17 @@ void keyPress(unsigned char key, const PxTransform& camera)
 
 	switch(toupper(key))
 	{
-	case 9:
-	{
-		if (_state == PLAY) {
-			particleSystem->changeWeapon();
-			rifleSelected = !rifleSelected;
+		// la tecla TAB tiene un codigo 9
+		case 9:
+		{
+			if (_state == PLAY) {
+				particleSystem->changeWeapon();
+				rifleSelected = !rifleSelected;
+			}
+			break;
 		}
-		break;
-	}
-	//case 'B': break;
-	//case ' ':	break;
-	//case ' ':
-	//{
-	//	//gun->shoot(bullet, GetCamera()->getTransform().p, GetCamera()->getDir());
-	//	particleSystem->generateFirework();
-	//	break;
-	//}
-	//case 'C':
-	//{
-	//	//gun->shoot(cannonBall, GetCamera()->getTransform().p, GetCamera()->getDir());
-	//	break;
-	//}
-	//case 'P':
-	//{
-	//	//gun->shoot(laser, GetCamera()->getTransform().p, GetCamera()->getDir());
-	//	break;
-	//}
-	case 'E':
-	{
-		//particleSystem->generateExplosion();
-		//solidRigidSystem->generateExplosion();
-		break;
-	}
-	//case 'K':
-	//{
-	//	int i = 2;
-	//	particleSystem->changeSpringConstant(i);
-	//	particleSystem->changeAnchoredSpringConstant(i);
-	//	particleSystem->changeElasticBandConstant(i);
-	//	break;
-	//}
-	//case 'L':
-	//{
-	//	int i = -2;
-	//	particleSystem->changeSpringConstant(i);
-	//	particleSystem->changeAnchoredSpringConstant(i);
-	//	particleSystem->changeElasticBandConstant(i);
-	//	break;
-	//}
-	//case 'F':
-	//{
-	//	particleSystem->addForceToSpring();
-	//	particleSystem->addForceToAnchoredSpring();
-	//	particleSystem->addForceToElasticBand();
-	//	particleSystem->addMassToBuoyancy();
-	//	break;
-	//}
-	default:
-		break;
+		default:
+			break;
 	}
 }
 

@@ -41,7 +41,8 @@ public:
 	Camera(const physx::PxVec3 &eye, const physx::PxVec3& dir);
 
 	void				handleMouse(int button, int state, int x, int y);
-	physx::PxVec2		getMousePos();
+	// metodo que devuelve la posicion del raton
+	physx::PxVec2		getMousePosition();
 	bool				handleKey(unsigned char key, int x, int y, float speed = 1.0f);
 	void				handleMotion(int x, int y);
 	void				handleAnalogMove(float x, float y);

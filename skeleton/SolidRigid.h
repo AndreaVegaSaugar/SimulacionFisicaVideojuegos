@@ -5,7 +5,6 @@ class SolidRigid : public Entity
 {
 public:
 
-
 	physx::PxScene* _scene = NULL;
 	physx::PxPhysics* _physics = NULL;
 	PxRigidDynamic* _rD = nullptr;

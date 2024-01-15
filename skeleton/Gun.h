@@ -9,6 +9,7 @@ using namespace physx;
 
 enum pType { RIFLE = 0, SHOTGUN = 1};
 
+// clase que se encarga de el arma y sus proyectiles
 class Gun
 {
 public:
@@ -31,6 +32,8 @@ public:
 	}
 
 private:
+	//solido rigido que actua como el cañon del arma y se mueve cada vez que disparamos
+	SolidRigid* weapon = nullptr;
 	bool isTurningUp = false;
 	bool isTurningDown = false;
 	float turningTime = 0.1f;
@@ -38,8 +41,6 @@ private:
 	int balasShotgun = 5;
 	Vector3 auxDir;
 	pType type;
-	//solido rigido con forma de el cañon del arma
-	SolidRigid* weapon = nullptr;
 	std::random_device rd{};
 	std::mt19937 _mt{ rd() };
 	std::uniform_real_distribution<float> deviation;

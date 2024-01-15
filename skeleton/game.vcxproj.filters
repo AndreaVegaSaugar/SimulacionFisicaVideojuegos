@@ -11,7 +11,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="Proyectil.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
@@ -28,15 +27,6 @@
     <ClCompile Include="ElasticBandGenerator.cpp" />
     <ClCompile Include="BuoyancyForceGenerator.cpp" />
     <ClCompile Include="SolidRigid.cpp" />
-    <ClCompile Include="SolidRigidSystem.cpp" />
-    <ClCompile Include="SolidRigidGenerator.cpp" />
-    <ClCompile Include="UniformSolidRigidGenerator.cpp" />
-    <ClCompile Include="GaussianSolidRigidGenerator.cpp" />
-    <ClCompile Include="ExplosionSolidRigidGenerator.cpp" />
-    <ClCompile Include="WhirlwindSolidRigidGenerator.cpp" />
-    <ClCompile Include="SolidRigidDragGenerator.cpp" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="Arbusto.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -49,7 +39,6 @@
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="Particle.h" />
-    <ClInclude Include="Proyectil.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="ParticleGenerator.h" />
@@ -68,15 +57,6 @@
     <ClInclude Include="ElasticBandGenerator.h" />
     <ClInclude Include="BuoyancyForceGenerator.h" />
     <ClInclude Include="SolidRigid.h" />
-    <ClInclude Include="SolidRigidSystem.h" />
-    <ClInclude Include="SolidRigidGenerator.h" />
-    <ClInclude Include="UniformSolidRigidGenerator.h" />
-    <ClInclude Include="GaussianSolidRigidGenerator.h" />
-    <ClInclude Include="ExplosionSolidRigidGenerator.h" />
-    <ClInclude Include="SolidRigidForceRegistry.h" />
-    <ClInclude Include="SolidRigidForceGenerator.h" />
-    <ClInclude Include="WhirlwindSolidRigidGenerator.h" />
-    <ClInclude Include="SolidRigidDragGenerator.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Arbusto.h" />
   </ItemGroup>
